@@ -1,9 +1,39 @@
 # Proofpane downloads
 
-This repo hosts download artefacts for [proofpane.com](https://proofpane.com).
-The main Proofpane codebase is private; this public mirror gives
-browsers (Chrome Safe Browsing, Edge SmartScreen) a high-reputation
-host so downloads aren't flagged as "unverified".
+This repo hosts download artefacts for [proofpane.com](https://proofpane.com)
+and is the public home of the **Proofpane MCP server** (the `airgov_daemon`).
+The main Proofpane codebase is private; this public mirror gives browsers
+(Chrome Safe Browsing, Edge SmartScreen) a high-reputation host so downloads
+aren't flagged as "unverified".
+
+## Proofpane MCP server
+
+`airgov_daemon mcp` is a stdio [Model Context Protocol](https://modelcontextprotocol.io)
+server — a governance layer that runs on the user's machine and exposes local
+tools to MCP clients (Claude Desktop, Cursor, Codex, …) under policy control.
+Every call is policy-gated, DLP-redacted before a model sees a secret, and
+recorded on a hash-chained, offline-verifiable audit trail.
+
+**Tools advertised** (`tools/list`, no pairing needed): `bash`, `read`, `write`,
+`edit`, `glob`, `grep`, `listdir`, `search_compliance_docs`, `ingest_to_rag`,
+`session_search`, `skills_list`, `skill_view`, `skill_manage`.
+
+### Run it
+
+```bash
+airgov_daemon mcp     # stdio MCP server (from a downloaded binary)
+```
+
+### Container / directory checks (e.g. Glama)
+
+A [`Dockerfile`](./Dockerfile) is included that pulls the public prebuilt Linux
+binary and runs the server in `mcp` mode, so an automated directory can start it
+and introspect (`initialize` + `tools/list`) **without the private source**:
+
+```bash
+docker build -t proofpane-mcp .
+docker run --rm -i proofpane-mcp     # speaks stdio MCP
+```
 
 ## Get the daemon
 
