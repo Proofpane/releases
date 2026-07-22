@@ -2,7 +2,10 @@
 # (e.g. Glama). It pulls the PUBLIC prebuilt daemon binary — no private source
 # required — and runs it in stdio `mcp` mode. Introspection (initialize +
 # tools/list) works with no pairing/config; it advertises 13 tools.
-FROM debian:bookworm-slim
+# trixie-slim (GLIBC 2.41+) — the prebuilt binary is built on a recent Ubuntu,
+# so an older base (e.g. bookworm / GLIBC 2.36) can fail to run it. Matches the
+# base Glama's generated build uses.
+FROM debian:trixie-slim
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends curl ca-certificates \
