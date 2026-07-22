@@ -52,3 +52,9 @@ shasum -a 256 -c ProofpaneDaemon-macos-x86_64.zip.sha256
 ## Reporting issues
 
 For daemon issues, email Louie.Lu@proofpane.com.
+
+## License
+
+This mirror repo's scaffolding (this README, the `Dockerfile`, `glama.json`) is
+released under the [MIT License](./LICENSE). **The Proofpane daemon it
+distributes is proprietary software** — see [proofpane.com](https://proofpane.com).
