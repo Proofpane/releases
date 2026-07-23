@@ -41,6 +41,28 @@ The main Proofpane codebase is private; this public mirror gives browsers
 (Chrome Safe Browsing, Edge SmartScreen) a high-reputation host so downloads
 aren't flagged as "unverified".
 
+## What you can do with just the download
+
+No account, no pairing, no talking to us first:
+
+- **Run the MCP server** — `airgov_daemon mcp` serves 13 governed tools
+  (`bash`, `read`, `write`, `edit`, `glob`, `grep`, `listdir`, RAG search,
+  session search, skills) to any MCP client. Local policy gates and DLP
+  redaction are active: a secret in a file read is masked before the model
+  sees it, on your machine, with no cloud in the loop.
+- **Scan your coverage** — `airgov_daemon coverage` reads this machine's
+  AI-client configs and shows which MCP servers route through governance and
+  which run direct (ungoverned).
+- **Check the monitoring switch** — `airgov_daemon monitoring-status`, and
+  `disable` / `enable <app>` to turn per-app monitoring off and on.
+- **Preview usage extraction** — `airgov_daemon usage-sync --dry-run` shows
+  what token/usage data WOULD sync, without sending anything.
+
+Pairing with a Proofpane org (`airgov_daemon pair <CODE>`) adds the parts that
+need a server to be worth anything: the tamper-evident cloud audit chain,
+human-approval (HITL) gates answered from Slack or the menu-bar tray, org-wide
+policy sync, and the Ed25519-signed Evidence Pack an auditor verifies offline.
+
 ## Proofpane MCP server
 
 `airgov_daemon mcp` is a stdio [Model Context Protocol](https://modelcontextprotocol.io)
