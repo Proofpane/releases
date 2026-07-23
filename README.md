@@ -58,16 +58,9 @@ No account, no pairing, no talking to us first:
 - **Preview usage extraction** — `airgov_daemon usage-sync --dry-run` shows
   what token/usage data WOULD sync, without sending anything.
 
-Pairing adds the parts that need a server to be worth anything: the
-tamper-evident cloud audit chain, human-approval (HITL) gates answered from the
-menu-bar tray app, org-wide policy sync, and the Ed25519-signed Evidence Pack an
-auditor verifies offline. Pairing is self-serve — sign up at
-[app.proofpane.com](https://app.proofpane.com), grab a code at `/mcp-setup`, run
-`airgov_daemon pair <CODE>`. Signing up makes you owner of your own org, which
-is what mints pairing codes — the shared public [demo org](https://app.proofpane.com/login?demo=1)
-deliberately cannot mint them, so a stranger can't attach a device to the org
-every visitor shares. (Answering approvals from Slack is an org-level
-integration an admin wires to their own Slack workspace afterwards.)
+Pairing with a Proofpane org (`airgov_daemon pair <CODE>`) connects the daemon
+to the server side: the cloud audit chain, human-approval gates, org-wide
+policy sync, and Evidence Pack export.
 
 ## Proofpane MCP server
 
