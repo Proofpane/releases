@@ -12,6 +12,18 @@ auditor verifies **offline** — no vendor account, no trust in us required.
 
 ![The Proofpane Architecture for AI Governance — every AI action passes a policy gate in the execution path; every decision lands on a hash-chained audit log; evidence exports as a signed pack verified outside the operator and the vendor](./architecture.png)
 
+**Our claim: governance must happen at runtime, and the record it leaves must be
+tamper-evident.** A policy that is checked after the fact governs nothing — by
+the time a review reads the log, the secret has left, the payment has cleared,
+the decision has shipped. So the gate sits **in the execution path**: the AI
+action does not complete until policy has allowed it, redacted it, or paused it
+for a human. And a record the operator can quietly edit proves nothing — so
+every decision is appended to a **SHA-256 hash-chained, append-only log**
+(DB-level immutability trigger, Ed25519 chain-head anchoring) whose export any
+auditor can verify **offline, against a published rubric, without trusting the
+operator or us**. Runtime enforcement produces the evidence; the evidence does
+not depend on anyone's word — including ours.
+
 The architecture is a **public, versioned reference** — not a private rubric:
 
 - **Read it:** [proofpane.com/architecture](https://proofpane.com/architecture/) — interactive map + full Markdown spec
