@@ -63,7 +63,10 @@ tamper-evident cloud audit chain, human-approval (HITL) gates answered from the
 menu-bar tray app, org-wide policy sync, and the Ed25519-signed Evidence Pack an
 auditor verifies offline. Pairing is self-serve — sign up at
 [app.proofpane.com](https://app.proofpane.com), grab a code at `/mcp-setup`, run
-`airgov_daemon pair <CODE>`. (Answering approvals from Slack is an org-level
+`airgov_daemon pair <CODE>`. Signing up makes you owner of your own org, which
+is what mints pairing codes — the shared public [demo org](https://app.proofpane.com/login?demo=1)
+deliberately cannot mint them, so a stranger can't attach a device to the org
+every visitor shares. (Answering approvals from Slack is an org-level
 integration an admin wires to their own Slack workspace afterwards.)
 
 ## Proofpane MCP server
