@@ -1,0 +1,138 @@
+{
+  "$purpose": "The canonical, machine-readable record of every Proofpane build that shipped: component, version, build date, distribution channel, per-platform sha256, and source commit where stamped. If you are cross-checking a release claim \u2014 human or AI \u2014 this file is the authority. GitHub release pages exist only for the components and versions listed here with a release_url; joining any other surfaces to infer a release history will produce artifacts that do not exist (it has happened: an external audit synthesized a 'v1.5.19 release page dated 23 July' by joining this site's daemon claim to an unrelated tray release page).",
+  "$maintenance": "Appended by the daemon-release CI on every release; guarded by backend/tests/test_release_index.py, which fails the build when the distributed binaries, the source version constants, and this record disagree. Entries marked record:reconstructed were backfilled from git history on 2026-08-03 and carry only what the history supports.",
+  "updated": "2026-08-03",
+  "policy": {
+    "immutability": "A version names exactly one build. The release pipeline refuses an existing tag and cannot replace published assets. One violation predates this policy and is recorded below rather than erased: daemon 1.5.19 was distributed as two different builds (2026-07-23 and 2026-08-02) under the same version.",
+    "build_identity": "From daemon 1.5.20 the release workflow stamps the source commit into the binary (BUILD_COMMIT); `airgov_daemon check-update` prints it. A version says which release; the commit says which bytes.",
+    "signing": "Binaries are unsigned by design \u2014 enterprises re-sign under their own code-signing identity. sha256 digests below are the integrity reference."
+  },
+  "components": {
+    "daemon": {
+      "version_source": "SERVER_VERSION in daemon/mcp_server.py",
+      "channels": [
+        "https://app.proofpane.com/daemon/ (fresh install)",
+        "auto-update via /api/v1/daemon/latest-version (version + sha256)",
+        "GitHub releases tagged daemon-v* (only where release_url is listed)"
+      ],
+      "releases": [
+        {
+          "version": "1.5.20",
+          "build_date": "2026-08-03",
+          "status": "distributed",
+          "release_url": "https://github.com/lywinged/proofpane/releases/tag/daemon-v1.5.20",
+          "source_commit": "981b8ee15436",
+          "sha256": {
+            "darwin-arm64": "b366fa1b1c1f9f83bd1be6be88a71be7729222837229e861dc2f81335acd9a7a",
+            "linux-aarch64": "c6e2292d87b2eff4ee1d7cb77498861a0dd8ebff5b86c4965735e73e1b6d2cb4",
+            "linux-x86_64": "b1d5b21aa0e68324e76680638ff90aa4f926db9c6e0626bbe1a9f5e250985fde",
+            "windows-amd64": "d05facdf091941c9653bcac24189ba0a477728cc04a87ff3a384f5b9f5ff17b2",
+            "darwin-x86_64": "c986b37ac7a4df9a322efe35a56f451cc3854245b9e86696f27cba10f3f34431"
+          },
+          "record": "contemporaneous"
+        },
+        {
+          "version": "1.5.19",
+          "build_date": "2026-08-02",
+          "status": "superseded",
+          "source": "CI build of 2026-07-28 carrying the Claude Code hook packaging fixes; exact commit not stamped into the binary \u2014 that gap is what BUILD_COMMIT closes from 1.5.20",
+          "sha256": {
+            "darwin-arm64": "3985f1d6b54abc8f2ef40f35c8980dcf8f1144de386fbc99a4510610e496ea6a",
+            "darwin-x86_64": "f407be7721c71f172612e448b98a973cda14ed64bd074b880ac9fe98400a021f",
+            "linux-aarch64": "a96b15434a5fa2c3307820f04e68efac9bde7e9c9a179bd4bc228d1de08bd6fa",
+            "linux-x86_64": "73d66a597ad954e08ac648e5e83eba1ebb9d901cbbc2d78397e745d4f0d5f06c",
+            "windows-amd64": "bdf84fa2c924e438ae790f4f1c79dcb91ab81a410cc29e5114386dffb0f91b37"
+          },
+          "note": "Replaced the 2026-07-23 binaries UNDER THE SAME VERSION \u2014 the immutability violation named in policy. windows-x86_64.exe is a filename alias of windows-amd64 (identical bytes).",
+          "record": "contemporaneous"
+        },
+        {
+          "version": "1.5.19",
+          "build_date": "2026-07-23",
+          "status": "superseded-in-place",
+          "note": "The first build under this version, WITHOUT the packaging fixes \u2014 on these binaries the Claude Code hook gate was absent, not failing. Replaced in place on 2026-08-02; hashes were not retained, which is part of why this record now exists.",
+          "record": "reconstructed"
+        },
+        {
+          "version": "1.5.18",
+          "build_date": "2026-07-23",
+          "status": "superseded",
+          "note": "Referenced by the tray-v0.1.3 release notes ('release: tray v0.1.3 + daemon v1.5.18').",
+          "record": "reconstructed"
+        },
+        {
+          "version": "1.5.11",
+          "build_date": "2026-06-22",
+          "status": "superseded",
+          "note": "First release built for all five platforms; added per-turn session/turn identifiers to MCP audit rows.",
+          "record": "reconstructed"
+        },
+        {
+          "version": "1.5.0",
+          "build_date": "2026-06-10",
+          "status": "superseded",
+          "release_url": "https://github.com/lywinged/proofpane/releases/tag/daemon-v1.5.0",
+          "record": "reconstructed"
+        },
+        {
+          "version": "0.1.0",
+          "build_date": "2026-06-05",
+          "status": "superseded",
+          "release_url": "https://github.com/lywinged/proofpane/releases/tag/v0.1.0-daemon",
+          "note": "macOS x86_64 only.",
+          "record": "reconstructed"
+        }
+      ]
+    },
+    "tray": {
+      "version_source": "version in tray/src-tauri/tauri.conf.json",
+      "channels": [
+        "GitHub releases tagged tray-v* (asset sha256 digests are on each release page)"
+      ],
+      "releases": [
+        {
+          "version": "0.3.7",
+          "status": "unreleased",
+          "note": "In source only; no published release yet. Source being ahead of the last release is the normal development state \u2014 infer nothing further from it.",
+          "record": "contemporaneous"
+        },
+        {
+          "version": "0.3.0",
+          "build_date": "2026-07-29",
+          "status": "released",
+          "release_url": "https://github.com/lywinged/proofpane/releases/tag/tray-v0.3.0",
+          "note": "The R3 device-confirmation surface.",
+          "record": "reconstructed"
+        },
+        {
+          "version": "0.2.0",
+          "status": "draft",
+          "note": "Release drafted but never published (untagged on GitHub).",
+          "record": "reconstructed"
+        },
+        {
+          "version": "0.1.3",
+          "build_date": "2026-07-23",
+          "status": "superseded",
+          "release_url": "https://github.com/lywinged/proofpane/releases/tag/tray-v0.1.3",
+          "note": "Per-app monitoring toggle. This is the '23 July release page' an external audit later mistook for a daemon v1.5.19 page.",
+          "record": "reconstructed"
+        },
+        {
+          "version": "0.1.1",
+          "build_date": "2026-07-22",
+          "status": "superseded",
+          "release_url": "https://github.com/lywinged/proofpane/releases/tag/tray-v0.1.1",
+          "record": "reconstructed"
+        }
+      ]
+    },
+    "desktop": {
+      "version_source": "desktop/ Tauri shell",
+      "channels": [
+        "CI-built (desktop-release.yml), distributed unsigned by design for enterprise re-signing; no public release history to date"
+      ],
+      "releases": []
+    }
+  }
+}

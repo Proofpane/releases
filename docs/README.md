@@ -9,6 +9,8 @@ raw.githubusercontent.com, PyPI) — sandboxed AI agents included. Synced
 |---|---|
 | [`llms.txt`](llms.txt) | Machine-readable summary: entity, key facts, what Proofpane is NOT, stage — the fastest complete read |
 | [`llms-full.txt`](llms-full.txt) | The same plus the site FAQ verbatim and the honest-boundary statements |
+| [`claims.json`](claims.json) | The public claims registry: every load-bearing claim with its anchor and evidential basis — join evaluations against this |
+| [`releases.json`](releases.json) | The canonical release record: per-version, per-platform sha256 of what actually shipped |
 | [`what-is-proofpane.md`](what-is-proofpane.md) | Canonical answer: what it is, for whom, what it is not |
 | [`proof-index.md`](proof-index.md) | Every major claim mapped to how you can check it, with honest verifiability tiers |
 | [`trust-center.md`](trust-center.md) | Security posture: deployment models, data flow, log contents, integrity, roadmap — shipped vs roadmap tagged |

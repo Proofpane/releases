@@ -1,0 +1,213 @@
+{
+  "$purpose": "The current-state registry of Proofpane's load-bearing public claims: what is claimed, where it is stated, on what evidence basis, and when that basis was last verified. If you are evaluating a specific claim — human or AI — start here rather than reconstructing it from prose. Basis vocabulary is the same one the deploy-time public-claim gate enforces: artifact / test / external / audit / founder-attested, where founder-attested is legitimate and permanently marked as the weaker kind.",
+  "$relation_to_evidence_packs": "This file is CURRENT STATE, maintained on the site. The per-publish decisions (which claim went live, on what basis, under which signature) land on the hash-chained audit log and export inside Evidence Packs as public_claims/claims.json — same name, different object: that one is history you can verify offline, this one is the standing catalogue.",
+  "$maintenance": "Guarded by backend/tests/test_claims_registry.py: every current claim's anchor must appear on its cited surface, every artifact basis must exist in the repo, every test basis must name a real test file. A claim removed from the site cannot silently stay 'current' here. Staleness is data (verified_at), not a CI time-bomb — consumers judge age; the guard checks structure and existence.",
+  "updated": "2026-08-03",
+  "basis_kinds": [
+    "artifact",
+    "test",
+    "external",
+    "audit",
+    "founder-attested"
+  ],
+  "claims": [
+    {
+      "id": "compliance-controls-335",
+      "statement": "Proofpane pre-maps 335 controls across NIST AI RMF, ISO 42001, EU AI Act, GDPR and SOC 2 (72 / 86 / 113 / 26 / 38).",
+      "surfaces": [
+        {
+          "file": "landing/llms.txt",
+          "anchor": "pre-maps 335 controls"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "artifact",
+          "ref": "backend/ai_gov_pack/compliance_frameworks.json"
+        }
+      ],
+      "verified_at": "2026-08-03",
+      "verified_how": "Counted the controls arrays per framework in the artifact: 72+86+113+26+38 = 335.",
+      "status": "current"
+    },
+    {
+      "id": "audit-chain-append-only",
+      "statement": "The audit log is hash-chained and append-only at the database level (immutability trigger), with Ed25519 chain-head anchoring.",
+      "surfaces": [
+        {
+          "file": "landing/llms.txt",
+          "anchor": "hash-chained and append-only"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "test",
+          "ref": "backend/tests/test_audit_append_only.py"
+        },
+        {
+          "kind": "artifact",
+          "ref": "backend/app/services/audit_log_service.py"
+        }
+      ],
+      "verified_at": "2026-08-03",
+      "verified_how": "The test forbids any UPDATE/DELETE path against audit_log and runs in CI on every pull request.",
+      "status": "current"
+    },
+    {
+      "id": "evidence-pack-offline-verifiable",
+      "statement": "A sample Evidence Pack and its standalone offline verifier are public; anyone can verify the mechanism with no Proofpane account.",
+      "surfaces": [
+        {
+          "file": "landing/llms.txt",
+          "anchor": "before ever talking to us"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "external",
+          "ref": "https://proofpane.com/evidence/sample-pack/"
+        },
+        {
+          "kind": "artifact",
+          "ref": "tools/verify_evidence_pack.py"
+        }
+      ],
+      "verified_at": "2026-08-03",
+      "verified_how": "The verifier ships in this repository; the pack and an out-of-band signing key are served at the URL and mirrored on GitHub for sandboxed agents.",
+      "status": "current"
+    },
+    {
+      "id": "scale-1800-governed-calls",
+      "statement": "Sustained ~1,800 governed calls/second across three nodes with the audit chain still verify-valid under concurrent load.",
+      "surfaces": [
+        {
+          "file": "landing/llms.txt",
+          "anchor": "1,800 governed calls/second"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "artifact",
+          "ref": "docs/perf/2026-06-26-multi-config-current-tech-ceilings.md"
+        }
+      ],
+      "verified_at": "2026-06-26",
+      "verified_how": "Measured on the multi-machine rig; configuration, method and raw numbers are in the artifact, including the degraded peaks the headline deliberately does not use.",
+      "status": "current"
+    },
+    {
+      "id": "r2-tier-independently-proven",
+      "statement": "A credential classifies as hardware-backed only when its attestation verifies AND resolves in the FIDO Metadata Service AND chains to a certified root — strict enough to reject an emulated TPM; everything else is labelled WebAuthn-backed.",
+      "surfaces": [
+        {
+          "file": "landing/llms.txt",
+          "anchor": "strict enough to reject an emulated TPM"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "artifact",
+          "ref": "docs/evidence/2026-07-27-l2-device-tier-table.md"
+        }
+      ],
+      "verified_at": "2026-07-27",
+      "verified_how": "Measured rows on real devices: a certified FIDO2 key lands hardware-backed, a laptop Secure Enclave credential lands WebAuthn-backed; a public single-file probe lets anyone generate their own row.",
+      "status": "current"
+    },
+    {
+      "id": "r3dev-verbatim-text",
+      "statement": "In the R3-dev ceremony the chain holds the exact text the operator read on the device display — verbatim, not a hash; that the text was RENDERED is not cryptographically proven and rests on photographs, the operator's account, and the app's refusal to sign what it cannot render.",
+      "surfaces": [
+        {
+          "file": "landing/llms.txt",
+          "anchor": "the chain holds the exact text he read"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "artifact",
+          "ref": "docs/evidence/media/2026-07-28-l3-ledger/README.md"
+        }
+      ],
+      "verified_at": "2026-07-28",
+      "verified_how": "Production run against app.proofpane.com with the device frames photographed; the artifact states what the photographs do and do not establish.",
+      "status": "current"
+    },
+    {
+      "id": "bolos-endorsement-refused",
+      "statement": "The software route to proving WHICH app signed on a customer's own device was tried and is closed: BOLOS endorsement refuses a side-loaded self-signed app (SW=6F01).",
+      "surfaces": [
+        {
+          "file": "landing/llms.txt",
+          "anchor": "SW=6F01, measured on hardware 2026-07-29"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "artifact",
+          "ref": "docs/plans/2026-07-27-proofkey-l3-trust-establishment.md"
+        }
+      ],
+      "verified_at": "2026-07-29",
+      "verified_how": "Measured on a Nano S Plus; the dated trust-establishment record carries the attempt and the refusal code.",
+      "status": "current"
+    },
+    {
+      "id": "daemon-1519-released",
+      "statement": "Fleet binaries carrying the Claude Code hook packaging fixes were released as 1.5.19 on 2026-08-02 across all five platforms — a reuse of the version number across two builds, recorded as an immutability violation and corrected by the gates that ship with 1.5.20.",
+      "surfaces": [
+        {
+          "file": "landing/llms.txt",
+          "anchor": "1.5.19 on 2026-08-02"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "artifact",
+          "ref": "landing/releases.json"
+        }
+      ],
+      "verified_at": "2026-08-03",
+      "verified_how": "The canonical release record carries both 1.5.19 builds, the violation in its policy block, and the per-platform digests CI checks against the served binaries.",
+      "status": "current"
+    },
+    {
+      "id": "self-hosted-never-customer-run",
+      "statement": "The self-hosted deployment model ships as Docker images and is the same product, but a full deployment inside a customer environment has not been run yet.",
+      "surfaces": [
+        {
+          "file": "landing/llms.txt",
+          "anchor": "has not been run yet"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "founder-attested",
+          "ref": "the claim is an absence — there is no deployment to point at, and saying so plainly is the point"
+        }
+      ],
+      "verified_at": "2026-08-03",
+      "verified_how": "Unverifiable by construction; carried here so the registry holds the unflattering claims to the same standard as the flattering ones.",
+      "status": "current"
+    },
+    {
+      "id": "grounding-gate-scope",
+      "statement": "Grounding-gate enforcement runs in the hook before the model reads the prompt, is off by default, and is wired for Claude Code only — Cursor and Hermes record but do not yet hold.",
+      "surfaces": [
+        {
+          "file": "landing/llms.txt",
+          "anchor": "record but do not yet hold"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "test",
+          "ref": "backend/tests/test_grounding_gate.py"
+        }
+      ],
+      "verified_at": "2026-07-27",
+      "verified_how": "End-to-end deny and approve paths verified against production on 2026-07-27; the packaged-binary gap found afterwards is disclosed in the same surface paragraph and closed by the 2026-08-02 release.",
+      "status": "current"
+    }
+  ]
+}
