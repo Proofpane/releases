@@ -2,7 +2,7 @@
   "$purpose": "The current-state registry of Proofpane's load-bearing public claims: what is claimed, where it is stated, on what evidence basis, and when that basis was last verified. If you are evaluating a specific claim — human or AI — start here rather than reconstructing it from prose. Basis vocabulary is the same one the deploy-time public-claim gate enforces: artifact / test / external / audit / founder-attested, where founder-attested is legitimate and permanently marked as the weaker kind.",
   "$relation_to_evidence_packs": "This file is CURRENT STATE, maintained on the site. The per-publish decisions (which claim went live, on what basis, under which signature) land on the hash-chained audit log and export inside Evidence Packs as public_claims/claims.json — same name, different object: that one is history you can verify offline, this one is the standing catalogue.",
   "$maintenance": "Guarded by backend/tests/test_claims_registry.py: every current claim's anchor must appear on its cited surface, every artifact basis must exist in the repo, every test basis must name a real test file. A claim removed from the site cannot silently stay 'current' here. Staleness is data (verified_at), not a CI time-bomb — consumers judge age; the guard checks structure and existence.",
-  "updated": "2026-08-08",
+  "updated": "2026-08-09",
   "basis_kinds": [
     "artifact",
     "test",
@@ -13,7 +13,7 @@
   "claims": [
     {
       "id": "macos-code-signing",
-      "statement": "The current distributed Proofpane daemon, v1.5.22, is signed on both macOS architectures with the Developer ID Application certificate issued to PROOFPANE LIMITED (team B94QM75QNG) and notarised by Apple. A bare executable cannot be stapled; Apple's assessment resolves its notarisation ticket online when it runs. The protected script installer invokes that assessment before installation. Windows is not Authenticode-signed; Linux carries published SHA-256 digests rather than a platform-signing claim.",
+      "statement": "The current distributed Proofpane daemon, v1.5.22, is signed on both macOS architectures with the Developer ID Application certificate issued to PROOFPANE LIMITED (team B94QM75QNG) and notarised by Apple. A bare executable cannot be stapled, so macOS resolves its notarisation ticket online during assessment. The protected script installer performs that assessment before installation; a quarantined browser download is normally assessed when opened. Windows is not Authenticode-signed; Linux carries published SHA-256 digests rather than a platform-signing claim.",
       "surfaces": [
         {
           "file": "landing/trust/index.html",
@@ -51,32 +51,32 @@
       "status": "current"
     },
     {
-      "id": "macos-tray-private-prerelease",
-      "statement": "Proofpane Tray v0.3.7 was published as a prerelease in the private GitHub repository on 2026-08-07; it requires authenticated repository access and is not anonymously publicly downloadable. Its universal macOS DMG is signed with Developer ID Application: PROOFPANE LIMITED (team B94QM75QNG), Apple-notarised and stapled; the canonical release record carries its SHA-256 digest. The Windows MSI is not Authenticode-signed, and the Linux assets carry SHA-256 digests without a platform-signing claim.",
+      "id": "macos-tray-public-release",
+      "statement": "Proofpane Tray v0.3.8 is an anonymously downloadable public release at https://github.com/Proofpane/releases/releases/tag/tray-v0.3.8. Its universal macOS DMG is signed with Developer ID Application: PROOFPANE LIMITED (team B94QM75QNG), Apple-notarised and stapled; the public release carries an adjacent SHA-256 sidecar. The exact source tag and build workflow both resolve to commit 10d0cbd411ccaef9eeb48593ed9ed0496065c298. The Windows MSI is not Authenticode-signed, and the Linux assets carry SHA-256 digests without a platform-signing claim.",
       "surfaces": [
         {
           "file": "landing/releases.json",
-          "anchor": "https://github.com/lywinged/proofpane/releases/tag/tray-v0.3.7"
+          "anchor": "https://github.com/Proofpane/releases/releases/tag/tray-v0.3.8"
         },
         {
           "file": "landing/trust/index.html",
-          "anchor": "Private-repository tray prerelease: signed and notarised."
+          "anchor": "Public Tray release: signed, notarised and anonymously downloadable."
         },
         {
           "file": "landing/install/index.html",
-          "anchor": "published prerelease inside the private source repository"
+          "anchor": "Public signed Tray installer"
         },
         {
           "file": "landing/llms.txt",
-          "anchor": "Private-repository tray prerelease v0.3.7 has a signed/notarised/stapled universal disk image"
+          "anchor": "Public Tray v0.3.8: SIGNED + APPLE-NOTARISED + ANONYMOUSLY DOWNLOADABLE."
         },
         {
           "file": "landing/llms-full.txt",
-          "anchor": "Private-repository tray prerelease v0.3.7 has a signed/notarised/stapled universal disk image"
+          "anchor": "Public Tray v0.3.8: SIGNED + APPLE-NOTARISED + ANONYMOUSLY DOWNLOADABLE."
         },
         {
           "file": "landing/index.html",
-          "anchor": "private-repository macOS tray prerelease v0.3.7 carries a signed, notarised and stapled universal disk image"
+          "anchor": "public Proofpane Tray v0.3.8 release carries a signed, notarised and stapled universal disk image"
         }
       ],
       "bases": [
@@ -86,15 +86,15 @@
         },
         {
           "kind": "test",
-          "ref": "tests/test_public_signing_posture.py::test_private_tray_prerelease_carries_artifact_evidence"
+          "ref": "tests/test_public_signing_posture.py::test_public_tray_release_carries_artifact_evidence"
         },
         {
-          "kind": "founder-attested",
-          "ref": "The tray-v0.3.7 assets were retrieved through authenticated access to the private GitHub repository; anonymous access returns no public release page, which is why this is not recorded as public distribution."
+          "kind": "external",
+          "ref": "https://github.com/Proofpane/releases/releases/tag/tray-v0.3.8"
         }
       ],
-      "verified_at": "2026-08-07",
-      "verified_how": "The tray-v0.3.7 DMG was downloaded through authenticated access after publication. codesign identified PROOFPANE LIMITED and team B94QM75QNG; xcrun stapler validate confirmed the embedded ticket; spctl --type open --context context:primary-signature accepted it as Notarized Developer ID; its SHA-256 digest is 9f8624820c7f61a1cccd5bd8d28958db7985f07fda600417055da12dd33c0502. The successful build workflow head was 927e15d9d38ed61ee0b9b657614e203820626135 while the release tag points to 4446304bb98c686f1da78d76d550668cdd796f1f; the canonical record preserves both instead of claiming they are the same provenance fact.",
+      "verified_at": "2026-08-09",
+      "verified_how": "After publication, the tray-v0.3.8 DMG and sidecar were downloaded without GitHub authentication from the public release. The sidecar reproduced SHA-256 3be45e08d9063caf0b5ac2c678578619b87e018368a96fc3101dbd57ef548d3f; codesign identified PROOFPANE LIMITED and team B94QM75QNG; xcrun stapler validate confirmed the embedded ticket; and spctl --type open --context context:primary-signature accepted it as Notarized Developer ID. The mounted app reported version 0.3.8. The workflow head and annotated source tag both resolve to 10d0cbd411ccaef9eeb48593ed9ed0496065c298.",
       "status": "current"
     },
     {
@@ -110,20 +110,16 @@
           "anchor": "Desktop CI build: verified, not presented as a public release."
         },
         {
-          "file": "landing/install/index.html",
-          "anchor": "A separate desktop CI"
-        },
-        {
           "file": "landing/llms.txt",
-          "anchor": "a separate desktop CI build was likewise verified"
+          "anchor": "A separate desktop CI build was likewise verified"
         },
         {
           "file": "landing/llms-full.txt",
-          "anchor": "a separate desktop CI build was likewise verified"
+          "anchor": "A separate desktop CI build was likewise verified"
         },
         {
           "file": "landing/index.html",
-          "anchor": "A separate signed/notarised desktop CI build has been verified."
+          "anchor": "A separate signed/notarised desktop CI build has been verified"
         }
       ],
       "bases": [
@@ -154,7 +150,7 @@
     },
     {
       "id": "external-checks-not-independent-assessment",
-      "statement": "Proofpane has multiple external checks and signals: Apple notarisation of the current distributed macOS daemon, an authenticated Tray v0.3.7 prerelease artifact from the private repository, and desktop-macos-latest artifact 8990063389 from workflow run 31168310848; dependency intelligence from PyPA/GitHub/RustSec; independently maintained Semgrep/Bandit/gitleaks rules; and community directory review. These are not an independent security assessment; no third-party penetration test, red team, bug bounty or review by a named assessor has been completed.",
+      "statement": "Proofpane has multiple external checks and signals: Apple notarisation of the current distributed macOS daemon, the anonymously downloadable Tray v0.3.8 public release, and desktop-macos-latest artifact 8990063389 from workflow run 31168310848; dependency intelligence from PyPA/GitHub/RustSec; independently maintained Semgrep/Bandit/gitleaks rules; and community directory review. These are not an independent security assessment; no third-party penetration test, red team, bug bounty or review by a named assessor has been completed.",
       "surfaces": [
         {
           "file": "landing/trust/index.html",
