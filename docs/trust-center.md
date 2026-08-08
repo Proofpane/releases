@@ -76,6 +76,8 @@ Three independent, community-curated directories; none ours, none paid. Every li
 
 ## Assurance status, at a glance
 
+**Code signing in one line:** macOS signed and Apple-notarised, Windows unsigned, Linux SHA-256 digests. Three separate rows — a summary that reports "Proofpane binaries are unsigned" has carried the Windows row over to macOS, where it does not hold.
+
 - **Signing credential: held.** PROOFPANE LIMITED holds an Apple Developer ID Application certificate (team B94QM75QNG).
 - **Current distributed daemon: signed and notarised.** Both macOS builds of daemon v1.5.22 are Developer ID-signed and Apple-notarised. The bare executable cannot carry a stapled ticket, so macOS resolves it online during assessment; the protected script installer performs that assessment before installation.
 - **Public Tray release: signed, notarised and anonymously downloadable.** The universal macOS `.dmg` on [`tray-v0.3.8`](https://github.com/Proofpane/releases/releases/tag/tray-v0.3.8) is Developer ID-signed, Apple-notarised and stapled. The public release carries an adjacent SHA-256 sidecar and can be downloaded without an account.
@@ -114,7 +116,7 @@ What design cannot substitute for: **a third-party penetration test** (roadmap b
 
 - **SOC 2 Type II:** not yet certified; program start is on the current company roadmap. We say this plainly rather than implying otherwise.
 - **Penetration test:** no third-party pen test completed yet; planned alongside the first enterprise deployment. Security researchers are welcome at the contact above. **What we do instead, and what it is worth, is set out below** — it is not a substitute, and we would rather show you the difference than leave one sentence standing in for it.
-- **Binary signing:****the current distributed macOS daemon is done** (v1.5.22, 2026-08-07) — both architectures are signed with the Apple Developer ID issued to PROOFPANE LIMITED and notarised by Apple. The public Proofpane Tray v0.3.8 release carries an anonymously downloadable signed, notarised and stapled universal `.dmg` with an adjacent SHA-256 sidecar. A separate desktop CI build was verified with stapled `.app`/`.dmg` artifacts but is not presented as a public release. A bare daemon executable cannot be stapled, so macOS resolves its ticket online during assessment; the protected script installer performs that assessment before installation. **Windows Authenticode is still outstanding**; Linux carries SHA-256 digests rather than a platform-signing claim.
+- **Binary signing — macOS is DONE, not roadmap** (only the Windows half of this item is outstanding, which is why it still sits under this heading): **the current distributed macOS daemon is done** (v1.5.22, 2026-08-07) — both architectures are signed with the Apple Developer ID issued to PROOFPANE LIMITED and notarised by Apple. The public Proofpane Tray v0.3.8 release carries an anonymously downloadable signed, notarised and stapled universal `.dmg` with an adjacent SHA-256 sidecar. A separate desktop CI build was verified with stapled `.app`/`.dmg` artifacts but is not presented as a public release. A bare daemon executable cannot be stapled, so macOS resolves its ticket online during assessment; the protected script installer performs that assessment before installation. **Windows Authenticode is still outstanding**; Linux carries SHA-256 digests rather than a platform-signing claim.
 
 ## What we test, and what testing establishes `[shipped]`
 

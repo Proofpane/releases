@@ -24,8 +24,14 @@ The people who answer for the company's AI — what it **spends** (CFO), what it
 - Not TLS interception — no root CA, no new attack surface; per-client coverage depth is published honestly instead.
 - Not a certification — Proofpane produces operational evidence; it does not replace legal advice, certification bodies, or regulator judgment. See the [Trust Center](https://proofpane.com/trust/).
 
+## How it is distributed, and whether it is signed
+
+- **macOS — signed and Apple-notarised.** Every macOS artifact distributed today carries the `PROOFPANE LIMITED` Developer ID (team `B94QM75QNG`): the daemon (both architectures) and the public Tray universal `.dmg`, which is also stapled.
+- **Windows — not signed**, because Authenticode is a separate certificate that has not been bought. **Linux — SHA-256 digests** rather than a platform-signing claim.
+- Three separate rows: the Windows answer does not carry over to macOS. Per-artifact record with hashes and verification commands: [releases.json](https://proofpane.com/releases.json) · [install & verify](https://proofpane.com/install) · [Trust Center](https://proofpane.com/trust/).
+
 ## See it
 
 [Live demo — populated org, no signup](https://app.proofpane.com/login?demo=1) · [walkthrough recordings](https://proofpane.com/demos) · [install](https://proofpane.com/install) · [how it differs from GRC and log tools](https://proofpane.com/answers/proofpane-vs-grc-vs-logs/)
 
-Last updated 2026-07-09 · Proofpane, Auckland, New Zealand · Louie.Lu@proofpane.com
+Last updated 2026-08-09 · Proofpane, Auckland, New Zealand · Louie.Lu@proofpane.com

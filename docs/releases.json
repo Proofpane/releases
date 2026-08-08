@@ -2,6 +2,27 @@
   "$purpose": "The canonical, machine-readable record of Proofpane's distributed and released builds, plus separately labelled verified CI artifacts: component, version, build date, distribution channel, per-platform sha256, and source commit where stamped. If you are cross-checking a release claim \u2014 human or AI \u2014 this file is the authority. GitHub release pages exist only for the components and versions listed here with a release_url; joining any other surfaces to infer a release history will produce artifacts that do not exist (it has happened: an external audit synthesized a 'v1.5.19 release page dated 23 July' by joining this site's daemon claim to an unrelated tray release page).",
   "$maintenance": "Appended by the daemon-release CI on every release; guarded by backend/tests/test_release_index.py, which fails the build when the distributed binaries, the source version constants, and this record disagree. Entries marked record:reconstructed were backfilled from git history on 2026-08-03 and carry only what the history supports. Entries marked record:verified-after-publication were added after the event from an identified artifact that was downloaded and interrogated directly; they are evidence-backed but were not written by the publishing transaction itself.",
   "updated": "2026-08-09",
+  "signing_summary": {
+    "$read_this_first": "Signing status is PER PLATFORM. macOS is signed and notarized; Windows is unsigned; Linux carries digests only. These are three separate rows: a summary that says 'Proofpane binaries are unsigned' has generalized the Windows row to macOS, where it is false. Every statement here is derived from the per-release entries below and is checkable from the artifacts themselves.",
+    "macos": {
+      "signed": true,
+      "notarized": true,
+      "identity": "Developer ID Application: PROOFPANE LIMITED (B94QM75QNG)",
+      "covers": "Every macOS artifact currently distributed: daemon 1.5.22 (darwin-arm64 + darwin-x86_64) and the public Tray 0.3.8 universal DMG. The verified desktop CI build is signed, notarized and stapled as well; it is labelled a CI build for distribution reasons, not signing ones.",
+      "stapled": "DMG artifacts are stapled. The bare daemon executable cannot be — Apple defines stapling for .app/.dmg/.pkg — so macOS resolves its notarization ticket online during assessment. 'stapled: false' below is a packaging property, NOT a missing signature.",
+      "verify_yourself": "codesign -dv --verbose=4 <path> names the signer; spctl -a -vvv answers 'accepted / source=Notarized Developer ID'; xcrun stapler validate applies to the DMG."
+    },
+    "windows": {
+      "signed": false,
+      "reason": "Authenticode requires a separate certificate that has not been purchased, so SmartScreen warns on first run.",
+      "integrity_reference": "published sha256 per artifact"
+    },
+    "linux": {
+      "signed": false,
+      "reason": "No platform code-signing claim is made for Linux.",
+      "integrity_reference": "published sha256 per artifact"
+    }
+  },
   "policy": {
     "immutability": "A version names exactly one build. The release pipeline refuses an existing tag and cannot replace published assets. One violation predates this policy and is recorded below rather than erased: daemon 1.5.19 was distributed as two different builds (2026-07-23 and 2026-08-02) under the same version.",
     "build_identity": "From daemon 1.5.20 the release workflow stamps the source commit into the binary (BUILD_COMMIT); `airgov_daemon check-update` prints it. A version says which release; the commit says which bytes.",
