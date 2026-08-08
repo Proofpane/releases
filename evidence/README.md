@@ -4,7 +4,7 @@ Mirror of <https://proofpane.com/evidence/sample-pack/> for readers whose networ
 egress is allowlisted to common developer domains (github.com,
 raw.githubusercontent.com, PyPI) and who therefore cannot download from
 proofpane.com directly — sandboxed AI agents included. **Same bytes, same
-claims, same honest labels as the site.** Synced 2026-07-26.
+claims, same honest labels as the site.** Synced 2026-08-08.
 
 This is a real Proofpane Evidence Pack — exported by the production code path
 and signed with Ed25519. Verify it on your own machine, offline: manifest

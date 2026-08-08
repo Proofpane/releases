@@ -1,4 +1,4 @@
-> Mirror of <https://proofpane.com/proof/> · synced 2026-07-26 · the canonical, always-current version lives on proofpane.com
+> Mirror of <https://proofpane.com/proof/> · synced 2026-08-08 · the canonical, always-current version lives on proofpane.com
 
 # Proof Index
 
@@ -21,7 +21,7 @@ VERIFY NOW · public, no account REPRODUCE · script + method provided SEE IT ·
 | Cost metered at one choke point, reconciled 1:1 vs vendor invoice | Open the usage ledger + reconciliation view in the demo org: [demo](https://app.proofpane.com/login?demo=1) → Billing / Usage | IN THE DEMO |
 | Every run is a replayable audit tree with full lineage | Open any agent run in the demo org and expand the tree — each tool call, policy decision, token and dollar: [demo](https://app.proofpane.com/login?demo=1) → Agent runs | IN THE DEMO |
 | Per-client coverage depth (gate+transform / gate-only / observe) | The full honest coverage matrix — including the column of what we deliberately can't reach — is on the homepage’s deep-dive and in [vs GRC & logs](https://proofpane.com/answers/proofpane-vs-grc-vs-logs/) | PUBLISHED |
-| Security posture (data flow, encryption, tenant isolation, roadmap) | Plain-text, item-by-item, with SOC 2 / pen test / signing tagged honestly as roadmap: [Trust Center](https://proofpane.com/trust/) | PUBLISHED |
+| Security posture (data flow, encryption, tenant isolation, roadmap) | Plain-text, item-by-item: the current distributed macOS daemon carries public Apple signing/notarisation evidence; a private-repository tray prerelease and desktop CI build are labelled separately from anonymous public distribution; SOC 2, a third-party pen test and Windows Authenticode remain roadmap: [Trust Center](https://proofpane.com/trust/) | PUBLISHED |
 
 **Reproduce the throughput number.** The claim is ~1,800 governed calls/second across three 16-vCPU nodes with the hash-chained audit still verify-valid under concurrent load (measured on the async-writer path, p99 ≈ 0.9 s at that rate). The script above is the exact k6 test; point it at your own deployment and target rate:
 

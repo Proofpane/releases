@@ -1,11 +1,11 @@
 {
-  "$purpose": "The canonical, machine-readable record of every Proofpane build that shipped: component, version, build date, distribution channel, per-platform sha256, and source commit where stamped. If you are cross-checking a release claim \u2014 human or AI \u2014 this file is the authority. GitHub release pages exist only for the components and versions listed here with a release_url; joining any other surfaces to infer a release history will produce artifacts that do not exist (it has happened: an external audit synthesized a 'v1.5.19 release page dated 23 July' by joining this site's daemon claim to an unrelated tray release page).",
-  "$maintenance": "Appended by the daemon-release CI on every release; guarded by backend/tests/test_release_index.py, which fails the build when the distributed binaries, the source version constants, and this record disagree. Entries marked record:reconstructed were backfilled from git history on 2026-08-03 and carry only what the history supports.",
-  "updated": "2026-08-03",
+  "$purpose": "The canonical, machine-readable record of Proofpane's distributed and released builds, plus separately labelled verified CI artifacts: component, version, build date, distribution channel, per-platform sha256, and source commit where stamped. If you are cross-checking a release claim \u2014 human or AI \u2014 this file is the authority. GitHub release pages exist only for the components and versions listed here with a release_url; joining any other surfaces to infer a release history will produce artifacts that do not exist (it has happened: an external audit synthesized a 'v1.5.19 release page dated 23 July' by joining this site's daemon claim to an unrelated tray release page).",
+  "$maintenance": "Appended by the daemon-release CI on every release; guarded by backend/tests/test_release_index.py, which fails the build when the distributed binaries, the source version constants, and this record disagree. Entries marked record:reconstructed were backfilled from git history on 2026-08-03 and carry only what the history supports. Entries marked record:verified-after-publication were added after the event from an identified artifact that was downloaded and interrogated directly; they are evidence-backed but were not written by the publishing transaction itself.",
+  "updated": "2026-08-08",
   "policy": {
     "immutability": "A version names exactly one build. The release pipeline refuses an existing tag and cannot replace published assets. One violation predates this policy and is recorded below rather than erased: daemon 1.5.19 was distributed as two different builds (2026-07-23 and 2026-08-02) under the same version.",
     "build_identity": "From daemon 1.5.20 the release workflow stamps the source commit into the binary (BUILD_COMMIT); `airgov_daemon check-update` prints it. A version says which release; the commit says which bytes.",
-    "signing": "Binaries are unsigned by design \u2014 enterprises re-sign under their own code-signing identity. sha256 digests below are the integrity reference."
+    "signing": "Signing is platform-specific and recorded per release. The current distributed macOS daemon v1.5.22 is signed on both architectures with Developer ID Application: PROOFPANE LIMITED (B94QM75QNG) and notarized by Apple; its bare executable resolves the ticket online because it cannot be stapled. Tray v0.3.7 is a published prerelease in the private GitHub repository; its universal macOS DMG is Developer ID-signed, Apple-notarized and stapled, but it is not anonymously publicly downloadable. A signed/notarized desktop CI build has also been verified. No post-certificate tray or desktop app release has anonymous public distribution recorded here. Windows releases are not Authenticode-signed. Linux has no platform-signing claim; published sha256 digests are the integrity reference. Enterprise re-signing remains optional."
   },
   "components": {
     "daemon": {
@@ -17,9 +17,55 @@
       ],
       "releases": [
         {
+          "version": "1.5.22",
+          "build_date": "2026-08-07",
+          "status": "distributed",
+          "release_url": "https://github.com/lywinged/proofpane/releases/tag/daemon-v1.5.22",
+          "source_commit": "363d11e0d6a9",
+          "sha256": {
+            "darwin-arm64": "1e004373aefb5801d02544eb4ebe10665dc6401d001c3bd8aa383c1392774f4f",
+            "linux-aarch64": "dbbb52e669a8e58b233bfa7b38a6403da72cb2c8bb48335897fe77a98865e913",
+            "linux-x86_64": "e5ac5296c72b381be5e9618040aa0143acdd0f16d7d2c1b85955049b5c65a8c6",
+            "windows-amd64": "a3aa25f31f98b7100d13af541338e4df40d2e642204916516949c73b6408dda8",
+            "darwin-x86_64": "856c07d0f33c455fbd29424799ac5683d2c2a43751469c18867b17a495575376"
+          },
+          "record": "contemporaneous",
+          "signing": {
+            "identity": "Developer ID Application: PROOFPANE LIMITED (B94QM75QNG)",
+            "team_id": "B94QM75QNG",
+            "notarized": true,
+            "stapled": false,
+            "stapled_note": "A bare executable cannot carry a stapled ticket; Apple's assessment resolves the notarization ticket online when it runs.",
+            "verified_how": "After assembly, each macOS binary was checked directly: Apple's codesign reported the exact PROOFPANE LIMITED identity and team B94QM75QNG, and spctl reported accepted / source=Notarized Developer ID. This verdict was taken from the artifacts, not inferred from the build log."
+          }
+        },
+        {
+          "version": "1.5.21",
+          "build_date": "2026-08-07",
+          "status": "superseded",
+          "release_url": "https://github.com/lywinged/proofpane/releases/tag/daemon-v1.5.21",
+          "source_commit": "fd890d2b68d1",
+          "sha256": {
+            "darwin-arm64": "504ac18f2b9ef7380d8544f9cdd6f8209759c2cb488136651bd2b475dba3fbbf",
+            "linux-aarch64": "95f4a883c5067a4ee49dc77998cd5fe7069496e0129f86fbead16269c522b71d",
+            "linux-x86_64": "9d055a0e2a70a14bcd3fcfb3b9733c7ba5442aee07d5ab3f9deb3043dbd57f8c",
+            "windows-amd64": "c89f276ee8a61de5be28e256f0f1fd20928e09f3d8b9ca9808346da2e1ec6bd8",
+            "darwin-x86_64": "8e3c613af38b4096cb85ca52a0a4b49bfccfc4232cba5780a7b7f79c7fb6e65a"
+          },
+          "record": "contemporaneous",
+          "signing": {
+            "identity": "Developer ID Application: PROOFPANE LIMITED (B94QM75QNG)",
+            "team_id": "B94QM75QNG",
+            "notarized": true,
+            "stapled": false,
+            "stapled_note": "A bare executable cannot carry a stapled ticket - stapling is defined for .app/.dmg/.pkg only - so Apple's assessment resolves the notarization ticket online when it runs.",
+            "verified_how": "After assembly, each macOS binary was checked directly: Apple's codesign reported the exact PROOFPANE LIMITED identity and team B94QM75QNG, and spctl reported accepted / source=Notarized Developer ID. This verdict was taken from the artifacts, not inferred from the build log."
+          }
+        },
+        {
           "version": "1.5.20",
           "build_date": "2026-08-03",
-          "status": "distributed",
+          "status": "superseded",
           "release_url": "https://github.com/lywinged/proofpane/releases/tag/daemon-v1.5.20",
           "source_commit": "981b8ee15436",
           "sha256": {
@@ -50,7 +96,15 @@
           "version": "1.5.19",
           "build_date": "2026-07-23",
           "status": "superseded-in-place",
-          "note": "The first build under this version, WITHOUT the packaging fixes \u2014 on these binaries the Claude Code hook gate was absent, not failing. Replaced in place on 2026-08-02; hashes were not retained, which is part of why this record now exists.",
+          "release_url": "https://github.com/Proofpane/releases/releases/tag/daemon-v1.5.19",
+          "sha256": {
+            "darwin-arm64": "603e5837f66d10113b8ba8dcee58c795a94dfb53a577395b60a44908db54039c",
+            "darwin-x86_64": "a6c2c3d195d07c94669754a3588b71fdf0ce2b790d2ab51a03261f90cbf4bf4d",
+            "linux-aarch64": "1d5477025c36c7d98f0b850cb01b22d7c179926d6050c3ba6be3d2c05189ecca",
+            "linux-x86_64": "d54185b7176e566f60160edc818d41511bfe0f460ec0e0a04f6ed997d8f754a1",
+            "windows-x86_64": "26389ec8893b451291c503ae3b80cbc37b068dae990cea42d3ebf9841fe58ec8"
+          },
+          "note": "The original 2026-07-23 build under this version remains preserved with all five assets and sidecars on the public Proofpane/releases page. These binaries predate the packaging fixes, so the Claude Code hook gate was absent, not failing. They are different bytes from the 2026-08-02 rebuild recorded above under the same version; the public URL identifies this original build only.",
           "record": "reconstructed"
         },
         {
@@ -87,14 +141,47 @@
     "tray": {
       "version_source": "version in tray/src-tauri/tauri.conf.json",
       "channels": [
-        "GitHub releases tagged tray-v* (asset sha256 digests are on each release page)"
+        "Private GitHub repository releases tagged tray-v* (authenticated access required; a release is not anonymous public distribution unless public_distribution is true)"
       ],
       "releases": [
         {
           "version": "0.3.7",
-          "status": "unreleased",
-          "note": "In source only; no published release yet. Source being ahead of the last release is the normal development state \u2014 infer nothing further from it.",
-          "record": "contemporaneous"
+          "build_date": "2026-08-07",
+          "status": "released",
+          "prerelease": true,
+          "visibility": "private",
+          "public_distribution": false,
+          "published_at": "2026-08-07T13:15:25Z",
+          "release_url": "https://github.com/lywinged/proofpane/releases/tag/tray-v0.3.7",
+          "source_provenance": {
+            "workflow_run_id": 31168321654,
+            "workflow_run_url": "https://github.com/lywinged/proofpane/actions/runs/31168321654",
+            "workflow_head_commit": "927e15d9d38ed61ee0b9b657614e203820626135",
+            "tag_commit": "4446304bb98c686f1da78d76d550668cdd796f1f",
+            "note": "The successful workflow run head and the release tag commit differ. The SHA-256 values below identify the released bytes; do not infer that the tag commit identifies the source used by this build."
+          },
+          "sha256": {
+            "linux-appimage": "4a864bc904148b6663aa7c8e102c89a94c5cf5d5b41a1382cbdbbcab2b622c9e",
+            "linux-deb": "04943d1566311ea872acdad3a99d3e59f3f18a5e69a894243052593cf0e2829b",
+            "macos-universal-dmg": "9f8624820c7f61a1cccd5bd8d28958db7985f07fda600417055da12dd33c0502",
+            "windows-x64-msi": "7f5214040a58b929724f389fe67afc3b7a9bb4abddd9089897b5ecf902f36366"
+          },
+          "signing": {
+            "artifact": "macos-universal-dmg",
+            "identity": "Developer ID Application: PROOFPANE LIMITED (B94QM75QNG)",
+            "team_id": "B94QM75QNG",
+            "notarized": true,
+            "stapled": true,
+            "verified_how": "The authenticated prerelease DMG was downloaded after publication and checked with codesign, xcrun stapler validate and spctl -a -vvv --type open --context context:primary-signature."
+          },
+          "platform_assurance": {
+            "macos-universal-dmg": "Developer ID-signed, Apple-notarized and stapled",
+            "windows-x64-msi": "not Authenticode-signed",
+            "linux-appimage": "SHA-256 digest only; no platform-signing claim",
+            "linux-deb": "SHA-256 digest only; no platform-signing claim"
+          },
+          "note": "Published GitHub prerelease in a private repository; it requires authenticated repository access and is not anonymous public distribution. Signing and notarization apply to the macOS DMG only; Windows remains unsigned and Linux is published with SHA-256 integrity digests only.",
+          "record": "verified-after-publication"
         },
         {
           "version": "0.3.0",
@@ -130,7 +217,29 @@
     "desktop": {
       "version_source": "desktop/ Tauri shell",
       "channels": [
-        "CI-built (desktop-release.yml), distributed unsigned by design for enterprise re-signing; no public release history to date"
+        "Private CI artifact (desktop-release.yml): authenticated access is required and no post-certificate public desktop release is recorded here. Windows artifacts are not Authenticode-signed and Linux carries no platform-signing claim. Enterprise re-signing remains optional."
+      ],
+      "verified_ci_builds": [
+        {
+          "build_date": "2026-08-07",
+          "workflow_run_id": 31168310848,
+          "workflow_run_url": "https://github.com/lywinged/proofpane/actions/runs/31168310848",
+          "workflow_head_commit": "927e15d9d38ed61ee0b9b657614e203820626135",
+          "artifact_id": 8990063389,
+          "artifact_name": "desktop-macos-latest",
+          "artifact_file": "Proofpane_0.1.0_universal.dmg",
+          "visibility": "private",
+          "public_distribution": false,
+          "sha256": "f865138a5bd7067ed27250b6068efc8b12463a82e0ee1e97ba8cd29c4a3665ee",
+          "signing": {
+            "identity": "Developer ID Application: PROOFPANE LIMITED (B94QM75QNG)",
+            "team_id": "B94QM75QNG",
+            "notarized": true,
+            "stapled": true,
+            "verified_how": "The authenticated CI artifact was downloaded and checked with codesign, xcrun stapler validate and spctl -a -vvv --type open --context context:primary-signature."
+          },
+          "record": "verified-after-publication"
+        }
       ],
       "releases": []
     }

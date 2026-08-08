@@ -35,11 +35,11 @@ on-machine gate for MCP-speaking AI clients.
 
 ## This repo
 
-This repo hosts download artefacts for [proofpane.com](https://proofpane.com)
-and is the public home of the **Proofpane MCP server** (the `airgov_daemon`).
-The main Proofpane codebase is private; this public mirror gives browsers
-(Chrome Safe Browsing, Edge SmartScreen) a high-reputation host so downloads
-aren't flagged as "unverified".
+This repository mirrors Proofpane's public evidence and documentation and
+preserves historical daemon release artifacts. The main Proofpane codebase is
+private. The current supported binaries are served from
+<https://app.proofpane.com/daemon/>; the canonical version, digest and
+platform-signing record is [`docs/releases.json`](docs/releases.json).
 
 ## What you can do with just the download
 
@@ -91,19 +91,26 @@ docker build -t proofpane-mcp .
 docker run --rm -i proofpane-mcp     # speaks stdio MCP
 ```
 
-## Get the daemon
+## Get the current daemon
 
-See [proofpane.com/install](https://proofpane.com/install) for the
-guided install. Direct download links live on the
-[Releases](https://github.com/proofpane/releases/releases) page.
+Use the fail-closed installer at
+[proofpane.com/install](https://proofpane.com/install). It selects the native
+artifact, verifies its published SHA-256, and on macOS requires the exact
+PROOFPANE LIMITED Developer ID (team B94QM75QNG) plus Apple's accepted
+notarisation verdict before replacing an installed file.
+
+The current channel is <https://app.proofpane.com/daemon/> and its authority is
+[`docs/releases.json`](docs/releases.json). The public GitHub binary archive
+currently stops at daemon v1.5.19; it is preserved as history and is **not** the
+current distribution channel.
 
 ## SHA-256 verification
 
-Every binary ships with a `.sha256` sibling:
-
-```bash
-shasum -a 256 -c ProofpaneDaemon-macos-x86_64.zip.sha256
-```
+Every current binary has a `.sha256` sibling. The installer verifies it
+automatically before installation. For manual inspection, download the artifact
+and its sibling from <https://app.proofpane.com/daemon/> and compare them with
+`shasum -a 256` (macOS) or `sha256sum` (Linux). The platform matrix and expected
+digests are also recorded in [`docs/releases.json`](docs/releases.json).
 
 ## Reporting issues
 

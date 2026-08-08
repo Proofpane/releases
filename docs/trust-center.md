@@ -1,16 +1,26 @@
-> Mirror of <https://proofpane.com/trust/> · synced 2026-07-26 · the canonical, always-current version lives on proofpane.com
+> Mirror of <https://proofpane.com/trust/> · synced 2026-08-08 · the canonical, always-current version lives on proofpane.com
 
 # Trust Center
 
 Plain text, structured, written for security review — no marketing images. Each item is tagged `[shipped]`  or `[roadmap]`  so you always know which is which.
 
-Last updated: 2026-07-09 · Security contact: [Louie.Lu@proofpane.com](mailto:Louie.Lu@proofpane.com) · Company stage: early (founding design partners onboarding) · Founder: [Louie Lu on LinkedIn](https://www.linkedin.com/in/louielunz)
+Last updated: 2026-08-04 · Security contact: [Louie.Lu@proofpane.com](mailto:Louie.Lu@proofpane.com) · Company stage: early (no customer deployment yet; the current priority is collaboration with an established platform) · Founder: [Louie Lu on LinkedIn](https://www.linkedin.com/in/louielunz)
+
+## Legal entity registered
+
+- **PROOFPANE LIMITED** — a New Zealand limited company, incorporated 3 June 2026.
+- **NZ company number:** 9434021 · **NZBN:** 9429053715692
+- **Registered office:** 22 Harper Street, Chatswood, Auckland 0626, New Zealand.
+- **Verify independently:** the [public Companies Register record](https://app.companiesoffice.govt.nz/companies/app/ui/pages/companies/9434021) is the authority; this page only points at it. Nothing here should be taken on our word when a register will answer.
 
 ## Deployment models `[shipped]`
 
-- **Cloud + local daemon (default):** a local connector (single binary; macOS arm64/x86_64, Linux, Windows) runs on the user's machine and pairs to the cloud control plane. Tool-layer enforcement happens locally; audit rows are sent to the cloud.
-- **Egress gateway:** model API calls route through the gateway for policy, DLP and metering, then forward to the provider the customer configured.
-- **Hosting:** the control plane runs on Fly.io (Sydney region). The landing site is served by Cloudflare Pages.
+**Two models, and we are precise about which one has been run.** Enforcement is local in both: the daemon runs on the user's machine, and DLP redaction happens before a model ever sees the text. What differs is where the control plane and the audit chain live.
+
+- **Self-hosted in your environment** — the server ships as Docker images and runs in your cloud or on your own hardware behind the firewall. The control plane, the database and the audit chain stay inside your boundary; **no prompts, no tool calls and no audit rows leave it**. Signed chain-head anchors are still exported, so a third party can detect deletion or substitution of history even though you hold the record. This is the model built for regulated buyers. **Honest status: the images ship and the architecture is the same product, but we have not yet run a full deployment inside a customer environment** — every measurement published on this site was taken against the hosted model below.
+- **Hosted by us** — a local connector pairs to a control plane we operate; tool-layer enforcement still happens locally, and audit rows are sent to that control plane. **This is what is running today**: the public demo, and the basis for every number and test result we publish.
+- **Egress gateway:** model API calls route through the gateway for policy, DLP and metering, then forward to the provider the customer configured. Available in both models.
+- **Hosting (our instance):** the control plane runs on Fly.io (Sydney region). The landing site is served by Cloudflare Pages. In a self-hosted deployment neither is in your path.
 
 ## Data flow — what leaves your machine `[shipped]`
 
@@ -56,11 +66,87 @@ Last updated: 2026-07-09 · Security contact: [Louie.Lu@proofpane.com](mailto:Lo
 - **Model providers** (Anthropic, OpenAI, Google, DeepSeek, or any OpenAI-compatible endpoint) — only for calls the customer routes through the gateway, under the customer's own keys where configured.
 - **Resend / Mailgun** — outbound email, if the customer enables email features.
 
+## Community directory listings — recognition, not security testing
+
+- Listed as a governance proxy for MCP in [**awesome-mcp-servers**](https://github.com/punkpeye/awesome-mcp-servers) — the main community MCP directory (third-party, community-reviewed).
+- Listed as a runtime governance gateway in [**awesome-ai-agent-governance**](https://github.com/systempromptio/awesome-ai-agent-governance), alongside Datadog LLM Observability and Patronus AI.
+- Listed in the Governance Frameworks section of [**awesome-ai-governance**](https://github.com/agentrust-io/awesome-ai-governance) — the directory maintained by Imran Siddique (creator of Microsoft's Agent Governance Toolkit; Chief Platform Officer at OPAQUE), merged by the maintainer.
+
+Three independent, community-curated directories; none ours, none paid. Every listing states plainly that Proofpane is a closed-source proprietary daemon and links the CC BY 4.0 reference architecture.
+
+## Assurance status, at a glance
+
+- **Signing credential: held.** PROOFPANE LIMITED holds an Apple Developer ID Application certificate (team B94QM75QNG).
+- **Current distributed daemon: signed and notarised.** Both macOS builds of daemon v1.5.22 are Developer ID-signed and Apple-notarised. The bare executable cannot carry a stapled ticket; Apple's assessment resolves it online when it runs, and the protected script installer invokes that assessment before installation.
+- **Private-repository tray prerelease: signed and notarised.** The macOS universal `.dmg` on `tray-v0.3.7`, a published prerelease in the private source repository, is Developer ID-signed, Apple-notarised and stapled. It is recorded by SHA-256 but is not anonymously downloadable.
+- **Desktop CI build: verified, not presented as a public release.** A macOS desktop CI build passed Developer ID signing, notarisation and stapling checks. The canonical release record contains no post-certificate public desktop release yet.
+- **Other platforms:** Windows Authenticode is outstanding; Linux releases carry published SHA-256 digests rather than a platform-signing claim.
+- **External checks and signals: present.** Apple returned its own verdict on the current daemon, the private-repository tray-v0.3.7 disk image and a named desktop CI artifact; dependency audits use PyPA, GitHub and RustSec data; Semgrep, Bandit and gitleaks contribute independently maintained rules; community maintainers reviewed the three directory listings above.
+- **Independent security assessment: not yet.** Those checks are useful, but they are not a penetration test, red team, bug bounty or review by a named assessor. The detailed boundary below is deliberate.
+
+## External verdicts, intelligence and recognition
+
+These are different currencies, so they stay separated: Apple controlled its own verdict; external communities maintain the advisory data and rules that our scanners consume; maintainers controlled whether to merge the directory listings. Only the first is an external check run against a named Proofpane artifact. None is an independent security assessment.
+
+- **Apple notarisation** — the strongest item here, because Apple ran a check and returned a verdict we did not control. Both macOS binaries in the current distributed daemon v1.5.22 were accepted. The private-repository `tray-v0.3.7` universal disk image was also accepted and stapled; a separate desktop CI build was accepted and stapled. Neither app artifact is anonymously downloadable as a public release. `spctl -a -vvv -t install` on the downloaded daemon answers `accepted / source=Notarized Developer ID`. **What it is not:** notarisation is an automated malware and code-signing-policy scan. It says Apple found no known malware and the signing meets their requirements. It is not a security review and Apple does not claim it is.
+- **External vulnerability databases** — dependency auditing resolves against advisory data we do not maintain: the PyPA Advisory Database, GitHub's Advisory Database, and RustSec. On 2026-08-07 that surfaced 23 known vulnerabilities across three Python packages we were shipping — our JWT library, our multipart parser, and the MCP SDK — all three upgraded the same day. We did not find those; a database maintained by other people did.
+- **External rulesets** — Semgrep's published security rules, Bandit, and gitleaks' secret patterns are written and maintained by their communities, not by us. What they look for is somebody else's judgement about what is dangerous, which is the part that makes them worth running at all.
+- **Community directory review** — the three listings in the section above were reviewed and merged by maintainers with no relationship to us.
+
+**And the honest limit on all of it: we run these, and we configure them.** We choose which rulesets, we set the baseline, and we wrote the allowlist that suppresses twelve secret-scan findings as false positives — each with its reason recorded, and every one of them checked, but checked by us. An external tool operated by the party being examined is not an external assessment, and describing it as one would be exactly the move this page exists to avoid.
+
+What that leaves genuinely open, and what money and a customer engagement buy: **nobody has been paid or invited to attack this product.** No penetration test, no bug bounty, no red team, no security review by a named assessor. Researchers are welcome at the security contact above, and a finding will be published here whatever it says.
+
+## Daemon security model
+
+The obvious objection first, in our own words: **the daemon is a high-privilege security chokepoint** — it proxies MCP tool calls and can touch the filesystem and shell on the machines it governs. We treat it that way by design:
+
+- **Protocol layer only:** a single user-space binary — no kernel extensions, no TLS interception, no browser hooks. Installing Proofpane does not add an attack surface class your security team has never certified before.
+- **Credential hygiene:** pairing secrets and device tokens are encrypted at rest; device tokens rotate with a grace window, and revocation is enforced server-side — a revoked device gets 401 everywhere, immediately.
+- **Capability containment:** per-agent policies constrain allowed/denied filesystem paths and shell usage, so a governed agent's blast radius is bounded by configuration, not trust.
+- **Data minimisation:** DLP redaction of secrets happens on-device, before transmission.
+- **Lifecycle honesty:** pairing, disconnect and per-app monitoring-off are audit events on the chain — the daemon being off is a recorded fact, not a blind spot.
+- **Reviewable design:** the full reference architecture is published under CC BY 4.0 for independent scrutiny.
+
+What design cannot substitute for: **a third-party penetration test** (roadmap below). We consider that the single most legitimate objection to installing Proofpane today, and it is scheduled against the first enterprise engagement rather than denied.
+
 ## Certifications & assurance `[roadmap]`
 
 - **SOC 2 Type II:** not yet certified; program start is on the current company roadmap. We say this plainly rather than implying otherwise.
-- **Penetration test:** no third-party pen test completed yet; planned alongside the first enterprise deployment. Security researchers are welcome at the contact above.
-- **Binary signing:** macOS notarisation (Developer ID) and Windows Authenticode signing are pending certificate procurement; the build pipeline publishes SHA-256 checksums today, and the installer verifies them.
+- **Penetration test:** no third-party pen test completed yet; planned alongside the first enterprise deployment. Security researchers are welcome at the contact above. **What we do instead, and what it is worth, is set out below** — it is not a substitute, and we would rather show you the difference than leave one sentence standing in for it.
+- **Binary signing:****the current distributed macOS daemon is done** (v1.5.22, 2026-08-07) — both architectures are signed with the Apple Developer ID issued to PROOFPANE LIMITED and notarised by Apple. The private-repository macOS tray prerelease v0.3.7 carries a signed, notarised and stapled universal `.dmg`. A separate desktop CI build was verified with stapled `.app`/`.dmg` artifacts. Neither is an anonymously downloadable post-certificate public app release. A bare daemon executable cannot be stapled; Apple's assessment resolves its ticket online when it runs, and the protected script installer invokes that assessment before installation. **Windows Authenticode is still outstanding**; Linux carries SHA-256 digests rather than a platform-signing claim.
+
+## What we test, and what testing establishes `[shipped]`
+
+A pen test and a test suite answer different questions. An assessor asks *what can an adversary do that you did not think of*. A suite asks *does the thing you built still do what you said*. Only the first needs somebody who does not share our blind spots, which is why it is on the `[roadmap]` above and nothing here replaces it. The second is ours to do properly, and this is what it currently covers.
+
+**5,650 backend tests** across 464 files, plus 29 frontend suites and a Playwright end-to-end spec. Rather than a total, the useful breakdown is by the property under test:
+
+- **Tenant isolation** (8 suites) — cross-org reads, control-plane routes, chat history, case events, custom skills. The recurring assertion is that another tenant's identifier returns **404, not their row**.
+- **Authorization and policy** (27 suites) — the four-tier risk classifier against command variants (a flag between a verb and its subcommand, a binary alias, a wrapper), server-side refusal of a click-approval on an escalated request, JWT strength, revoked-device enforcement on every authenticated path.
+- **DLP** (9 suites) — redaction before the model and before the chain, on the daemon (which must work with no backend reachable), the control plane, and the egress broker.
+- **Audit-chain integrity** — the append-only trigger, chain verification, and a test that forbids any new code path from updating or deleting an audit row.
+- **The Evidence Pack claim, tested as an auditor would meet it** — a pack is built, then verified in a **fresh virtualenv containing only `cryptography`**, with a control asserting that interpreter cannot import our application. Verifying it in our own environment would prove the tool works on our machine and nothing about "your auditor needs no Proofpane account".
+
+**17 structural guards.** These are the unusual ones, and they exist because a fixed bug that can silently return is not fixed. Each forbids a *class* of defect rather than an instance, and each was written after that class actually bit us:
+
+- no raw database connection outside the session layer (tenant filtering lives there)
+- no raw provider call outside the metering choke point (an unmetered call is an unbilled and unaudited one)
+- no `UPDATE` or `DELETE` path against the audit log
+- no unconditional re-signing in an install path — added 2026-08-07, when the updater was found replacing the Developer ID signature it had just verified
+- no SQL that a Postgres deployment could not run
+- every public claim carries a resolvable basis; every claim about a *software* property carries a **test** basis, because a document goes on saying so after the behaviour changes
+- every buildable stack has a CI job that builds it — added the same day, after pull requests touching three stacks were found running nothing and showing green
+
+**Automated scanning** runs on pull requests and weekly: SAST (Semgrep, Bandit), dependency auditing (pip-audit, npm audit, cargo audit), and secret scanning over full git history (gitleaks). Findings are held against a committed baseline that may shrink and not grow, so a new one is visible without pretending the backlog is zero. First run, 2026-08-07: five high-severity findings triaged to zero, and twelve secret-scan hits — all twelve false positives, individually checked, allowlisted with reasons rather than left to make the number meaningless.
+
+**Whether a suite tests what it names** is a separate question from how many tests it has, and counting does not answer it. A rule that is named by a test but never *decides* that test's outcome can be deleted from an implementation, which will still pass. We published the method for measuring this rather than only asserting we had thought about it: [*Load-Bearing Coverage — Mechanically Checking Whether a Conformance Suite Can Be Passed Without Doing the Work*](https://doi.org/10.5281/zenodo.21844893) (2026-08-08, CC BY 4.0; implementation Apache-2.0). A rule counts as load-bearing only if deleting it from the reference verifier changes at least one published vector's outcome. Across nine measurements on seven corpora in three languages, suites that pass in the sense their authors intend were found certifying implementations that could skip obligations entirely — and the paper reports the same method turned back on its own suite, including three findings that were bugs in the checker.
+
+**What none of this establishes.** Every test here encodes something we already thought of. That is precisely the limitation an independent assessor exists to address, and no amount of self-testing closes it — a suite cannot surprise its author.
+
+And the criterion above has **not been run against the suite on this page**. It was built for conformance vector sets with a reference verifier to mutate, which is not the shape of most of these tests; adapting it is work we have not done. So the honest position is that we can state the standard and have applied it elsewhere, while the 5,650 figure remains a count — and this paragraph is here because publishing a method for detecting overstated coverage, and then quietly exempting yourself from it, is the failure the paper is about.
+
+Specific gaps we would rather name than have found: no third-party penetration test; no adversarial review of the tier classifier by someone trying to defeat it; the hardware authorization path (`R3-dev`) cannot run in CI at all and is verified by measurement on a physical device; and the self-hosted deployment model has never been exercised inside a customer environment.
 
 ## Incident response
 

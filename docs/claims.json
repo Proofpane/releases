@@ -2,7 +2,7 @@
   "$purpose": "The current-state registry of Proofpane's load-bearing public claims: what is claimed, where it is stated, on what evidence basis, and when that basis was last verified. If you are evaluating a specific claim — human or AI — start here rather than reconstructing it from prose. Basis vocabulary is the same one the deploy-time public-claim gate enforces: artifact / test / external / audit / founder-attested, where founder-attested is legitimate and permanently marked as the weaker kind.",
   "$relation_to_evidence_packs": "This file is CURRENT STATE, maintained on the site. The per-publish decisions (which claim went live, on what basis, under which signature) land on the hash-chained audit log and export inside Evidence Packs as public_claims/claims.json — same name, different object: that one is history you can verify offline, this one is the standing catalogue.",
   "$maintenance": "Guarded by backend/tests/test_claims_registry.py: every current claim's anchor must appear on its cited surface, every artifact basis must exist in the repo, every test basis must name a real test file. A claim removed from the site cannot silently stay 'current' here. Staleness is data (verified_at), not a CI time-bomb — consumers judge age; the guard checks structure and existence.",
-  "updated": "2026-08-03",
+  "updated": "2026-08-08",
   "basis_kinds": [
     "artifact",
     "test",
@@ -11,6 +11,182 @@
     "founder-attested"
   ],
   "claims": [
+    {
+      "id": "macos-code-signing",
+      "statement": "The current distributed Proofpane daemon, v1.5.22, is signed on both macOS architectures with the Developer ID Application certificate issued to PROOFPANE LIMITED (team B94QM75QNG) and notarised by Apple. A bare executable cannot be stapled; Apple's assessment resolves its notarisation ticket online when it runs. The protected script installer invokes that assessment before installation. Windows is not Authenticode-signed; Linux carries published SHA-256 digests rather than a platform-signing claim.",
+      "surfaces": [
+        {
+          "file": "landing/trust/index.html",
+          "anchor": "current distributed macOS daemon is done"
+        },
+        {
+          "file": "landing/install/index.html",
+          "anchor": "current distributed release is signed and notarised"
+        },
+        {
+          "file": "landing/llms-full.txt",
+          "anchor": "current distributed daemon v1.5.22"
+        },
+        {
+          "file": "landing/llms.txt",
+          "anchor": "current distributed daemon v1.5.22"
+        },
+        {
+          "file": "landing/index.html",
+          "anchor": "current distributed macOS daemon, v1.5.22"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "artifact",
+          "ref": "landing/releases.json"
+        },
+        {
+          "kind": "test",
+          "ref": "tests/test_no_unconditional_resign.py"
+        }
+      ],
+      "verified_at": "2026-08-07",
+      "verified_how": "Not from a build log. Both v1.5.22 macOS binaries in the distributed channel were interrogated after assembly: codesign -dv --verbose=4 names PROOFPANE LIMITED and team B94QM75QNG; spctl -a -vvv -t install returns 'accepted / source=Notarized Developer ID'; their SHA-256 values match this release record and the served sidecars. Anyone can download the same bytes and repeat those checks.",
+      "status": "current"
+    },
+    {
+      "id": "macos-tray-private-prerelease",
+      "statement": "Proofpane Tray v0.3.7 was published as a prerelease in the private GitHub repository on 2026-08-07; it requires authenticated repository access and is not anonymously publicly downloadable. Its universal macOS DMG is signed with Developer ID Application: PROOFPANE LIMITED (team B94QM75QNG), Apple-notarised and stapled; the canonical release record carries its SHA-256 digest. The Windows MSI is not Authenticode-signed, and the Linux assets carry SHA-256 digests without a platform-signing claim.",
+      "surfaces": [
+        {
+          "file": "landing/releases.json",
+          "anchor": "https://github.com/lywinged/proofpane/releases/tag/tray-v0.3.7"
+        },
+        {
+          "file": "landing/trust/index.html",
+          "anchor": "Private-repository tray prerelease: signed and notarised."
+        },
+        {
+          "file": "landing/install/index.html",
+          "anchor": "published prerelease inside the private source repository"
+        },
+        {
+          "file": "landing/llms.txt",
+          "anchor": "Private-repository tray prerelease v0.3.7 has a signed/notarised/stapled universal disk image"
+        },
+        {
+          "file": "landing/llms-full.txt",
+          "anchor": "Private-repository tray prerelease v0.3.7 has a signed/notarised/stapled universal disk image"
+        },
+        {
+          "file": "landing/index.html",
+          "anchor": "private-repository macOS tray prerelease v0.3.7 carries a signed, notarised and stapled universal disk image"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "artifact",
+          "ref": "landing/releases.json"
+        },
+        {
+          "kind": "test",
+          "ref": "tests/test_public_signing_posture.py::test_private_tray_prerelease_carries_artifact_evidence"
+        },
+        {
+          "kind": "founder-attested",
+          "ref": "The tray-v0.3.7 assets were retrieved through authenticated access to the private GitHub repository; anonymous access returns no public release page, which is why this is not recorded as public distribution."
+        }
+      ],
+      "verified_at": "2026-08-07",
+      "verified_how": "The tray-v0.3.7 DMG was downloaded through authenticated access after publication. codesign identified PROOFPANE LIMITED and team B94QM75QNG; xcrun stapler validate confirmed the embedded ticket; spctl --type open --context context:primary-signature accepted it as Notarized Developer ID; its SHA-256 digest is 9f8624820c7f61a1cccd5bd8d28958db7985f07fda600417055da12dd33c0502. The successful build workflow head was 927e15d9d38ed61ee0b9b657614e203820626135 while the release tag points to 4446304bb98c686f1da78d76d550668cdd796f1f; the canonical record preserves both instead of claiming they are the same provenance fact.",
+      "status": "current"
+    },
+    {
+      "id": "macos-desktop-ci-signing",
+      "statement": "The macOS desktop CI artifact desktop-macos-latest (artifact 8990063389 from workflow run 31168310848 at head 927e15d9d38ed61ee0b9b657614e203820626135) has been Developer ID-signed, Apple-notarised and artifact-verified; its universal DMG is stapled and has SHA-256 f865138a5bd7067ed27250b6068efc8b12463a82e0ee1e97ba8cd29c4a3665ee. This is a verified private CI build result, not a public-release claim: no post-certificate public desktop release is recorded in the canonical release index.",
+      "surfaces": [
+        {
+          "file": "landing/releases.json",
+          "anchor": "desktop-macos-latest"
+        },
+        {
+          "file": "landing/trust/index.html",
+          "anchor": "Desktop CI build: verified, not presented as a public release."
+        },
+        {
+          "file": "landing/install/index.html",
+          "anchor": "A separate desktop CI"
+        },
+        {
+          "file": "landing/llms.txt",
+          "anchor": "a separate desktop CI build was likewise verified"
+        },
+        {
+          "file": "landing/llms-full.txt",
+          "anchor": "a separate desktop CI build was likewise verified"
+        },
+        {
+          "file": "landing/index.html",
+          "anchor": "A separate signed/notarised desktop CI build has been verified."
+        }
+      ],
+      "bases": [
+        {
+          "kind": "artifact",
+          "ref": "landing/releases.json"
+        },
+        {
+          "kind": "artifact",
+          "ref": ".github/workflows/apple-signing-note.md"
+        },
+        {
+          "kind": "artifact",
+          "ref": ".github/workflows/desktop-release.yml"
+        },
+        {
+          "kind": "test",
+          "ref": "tests/test_public_signing_posture.py::test_private_desktop_ci_build_carries_artifact_evidence"
+        },
+        {
+          "kind": "founder-attested",
+          "ref": "The 2026-08-07 desktop CI artifacts were downloaded and interrogated with codesign, stapler and spctl; the absence of a post-certificate public desktop release is separately visible in landing/releases.json."
+        }
+      ],
+      "verified_at": "2026-08-07",
+      "verified_how": "The desktop-macos-latest artifact (8990063389) was downloaded from successful workflow run 31168310848. Its Proofpane_0.1.0_universal.dmg hashes to f865138a5bd7067ed27250b6068efc8b12463a82e0ee1e97ba8cd29c4a3665ee; codesign names PROOFPANE LIMITED and team B94QM75QNG, xcrun stapler validate confirms the embedded ticket, and spctl --type open --context context:primary-signature accepts it as Notarized Developer ID. The claim remains limited to a private CI artifact, not anonymous public distribution.",
+      "status": "current"
+    },
+    {
+      "id": "external-checks-not-independent-assessment",
+      "statement": "Proofpane has multiple external checks and signals: Apple notarisation of the current distributed macOS daemon, an authenticated Tray v0.3.7 prerelease artifact from the private repository, and desktop-macos-latest artifact 8990063389 from workflow run 31168310848; dependency intelligence from PyPA/GitHub/RustSec; independently maintained Semgrep/Bandit/gitleaks rules; and community directory review. These are not an independent security assessment; no third-party penetration test, red team, bug bounty or review by a named assessor has been completed.",
+      "surfaces": [
+        {
+          "file": "landing/trust/index.html",
+          "anchor": "Assurance status, at a glance"
+        },
+        {
+          "file": "landing/llms.txt",
+          "anchor": "Assurance status, precisely"
+        },
+        {
+          "file": "landing/llms-full.txt",
+          "anchor": "Assurance status, precisely"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "artifact",
+          "ref": ".github/workflows/security.yml"
+        },
+        {
+          "kind": "artifact",
+          "ref": ".github/workflows/apple-signing-note.md"
+        },
+        {
+          "kind": "founder-attested",
+          "ref": "No assessor engagement, penetration-test report, red-team exercise or bug-bounty programme exists as of 2026-08-08; this is an absence disclosed by the company, not an independently provable positive result."
+        }
+      ],
+      "verified_at": "2026-08-08",
+      "verified_how": "Separated evidence by who controls the verdict. Apple decides notarisation; advisory databases and rulesets are external but Proofpane runs the tools; directory maintainers decide whether to merge a listing. None supplies the scoped adversarial engagement and named report that would justify an independent-security-assessment claim.",
+      "status": "current"
+    },
     {
       "id": "compliance-controls-335",
       "statement": "Proofpane pre-maps 335 controls across NIST AI RMF, ISO 42001, EU AI Act, GDPR and SOC 2 (72 / 86 / 113 / 26 / 38).",
@@ -24,9 +200,13 @@
         {
           "kind": "artifact",
           "ref": "backend/ai_gov_pack/compliance_frameworks.json"
+        },
+        {
+          "kind": "test",
+          "ref": "tests/test_public_claim_control_count.py"
         }
       ],
-      "verified_at": "2026-08-03",
+      "verified_at": "2026-08-04",
       "verified_how": "Counted the controls arrays per framework in the artifact: 72+86+113+26+38 = 335.",
       "status": "current"
     },
@@ -42,7 +222,7 @@
       "bases": [
         {
           "kind": "test",
-          "ref": "backend/tests/test_audit_append_only.py"
+          "ref": "tests/test_audit_append_only.py"
         },
         {
           "kind": "artifact",
@@ -70,6 +250,10 @@
         {
           "kind": "artifact",
           "ref": "tools/verify_evidence_pack.py"
+        },
+        {
+          "kind": "test",
+          "ref": "tests/test_evidence_pack_verifies_standalone.py"
         }
       ],
       "verified_at": "2026-08-03",
@@ -165,6 +349,10 @@
         {
           "kind": "artifact",
           "ref": "landing/releases.json"
+        },
+        {
+          "kind": "test",
+          "ref": "tests/test_release_index.py"
         }
       ],
       "verified_at": "2026-08-03",
@@ -191,6 +379,33 @@
       "status": "current"
     },
     {
+      "id": "legal-entity-nz-company",
+      "statement": "Proofpane is operated by PROOFPANE LIMITED, a New Zealand limited company incorporated 3 June 2026 (company number 9434021, NZBN 9429053715692), registered office 22 Harper Street, Chatswood, Auckland 0626.",
+      "surfaces": [
+        {
+          "file": "landing/llms.txt",
+          "anchor": "NZ company number 9434021"
+        },
+        {
+          "file": "landing/index.html",
+          "anchor": "NZBN 9429053715692"
+        },
+        {
+          "file": "landing/trust/index.html",
+          "anchor": "PROOFPANE LIMITED"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "external",
+          "ref": "https://app.companiesoffice.govt.nz/companies/app/ui/pages/companies/9434021"
+        }
+      ],
+      "verified_at": "2026-08-03",
+      "verified_how": "Read directly off the public NZ Companies Register record for company 9434021 on this date: registered name PROOFPANE LIMITED, status Registered, registered office and address for service both 22 Harper Street, Chatswood, Auckland 0626. The register is the authority; this registry only points at it. Re-read 2026-08-04 after the incorporation date in this entry (2 June) failed to match the register (3 June): a claim whose own verified_how says it was read off a source has to match that source, and did not.",
+      "status": "current"
+    },
+    {
       "id": "grounding-gate-scope",
       "statement": "Grounding-gate enforcement runs in the hook before the model reads the prompt, is off by default, and is wired for Claude Code only — Cursor and Hermes record but do not yet hold.",
       "surfaces": [
@@ -202,11 +417,38 @@
       "bases": [
         {
           "kind": "test",
-          "ref": "backend/tests/test_grounding_gate.py"
+          "ref": "tests/test_grounding_gate.py"
         }
       ],
       "verified_at": "2026-07-27",
       "verified_how": "End-to-end deny and approve paths verified against production on 2026-07-27; the packaged-binary gap found afterwards is disclosed in the same surface paragraph and closed by the 2026-08-02 release.",
+      "status": "current"
+    },
+    {
+      "id": "load-bearing-coverage-not-self-applied",
+      "statement": "We published a mechanical criterion for whether a conformance suite can be passed without doing the work, and have not run it against the test suite this site counts.",
+      "surfaces": [
+        {
+          "file": "landing/trust/index.html",
+          "anchor": "not been run against the suite on this"
+        },
+        {
+          "file": "landing/llms.txt",
+          "anchor": "NOT been run against Proofpane's own suite"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "artifact",
+          "ref": "https://doi.org/10.5281/zenodo.21844893"
+        },
+        {
+          "kind": "founder-attested",
+          "ref": "That the criterion has not been applied to Proofpane's own suite is a statement about work not done, and nothing can evidence an absence; it stands on the founder's word and is falsifiable the moment a measurement is published."
+        }
+      ],
+      "verified_at": "2026-08-08",
+      "verified_how": "Paper published to Zenodo 2026-08-08 (concept DOI 10.5281/zenodo.21844893, version 0.20.2 = 21845274); implementation at github.com/lywinged/load-bearing-coverage. The corpora measured are listed in the paper and do not include this repository.",
       "status": "current"
     }
   ]

@@ -3,14 +3,14 @@
 Everything public a cold evaluator needs, mirrored from proofpane.com for
 readers whose egress is allowlisted to developer domains (github.com,
 raw.githubusercontent.com, PyPI) — sandboxed AI agents included. Synced
-2026-07-26; the canonical, always-current versions live on the site.
+2026-08-08; the canonical, always-current versions live on the site.
 
 | File | What it is |
 |---|---|
 | [`llms.txt`](llms.txt) | Machine-readable summary: entity, key facts, what Proofpane is NOT, stage — the fastest complete read |
 | [`llms-full.txt`](llms-full.txt) | The same plus the site FAQ verbatim and the honest-boundary statements |
-| [`claims.json`](claims.json) | The public claims registry: every load-bearing claim with its anchor and evidential basis — join evaluations against this |
-| [`releases.json`](releases.json) | The canonical release record: per-version, per-platform sha256 of what actually shipped |
+| [`claims.json`](claims.json) | Current public claims, their evidence bases, verification method and status |
+| [`releases.json`](releases.json) | Canonical per-version release and platform-signing record |
 | [`what-is-proofpane.md`](what-is-proofpane.md) | Canonical answer: what it is, for whom, what it is not |
 | [`proof-index.md`](proof-index.md) | Every major claim mapped to how you can check it, with honest verifiability tiers |
 | [`trust-center.md`](trust-center.md) | Security posture: deployment models, data flow, log contents, integrity, roadmap — shipped vs roadmap tagged |

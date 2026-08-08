@@ -1,4 +1,4 @@
-> Mirror of <https://proofpane.com/answers/what-is-proofpane/> · synced 2026-07-26 · the canonical, always-current version lives on proofpane.com
+> Mirror of <https://proofpane.com/answers/what-is-proofpane/> · synced 2026-08-08 · the canonical, always-current version lives on proofpane.com
 
 # What is Proofpane?
 
@@ -6,7 +6,7 @@
 
 ## Who it's for
 
-The people who answer for the company's AI — what it **spends** (CFO), what it **leaks** (CISO / internal audit), what it **decides** (CEO / board). Teams keep their existing tools; nothing changes for the people who just use them.
+The people who answer for the company's AI — what it **spends** (CFO), what it **leaks** (CISO / internal audit), what it **decides** (CEO / board). Teams keep their existing tools; the tools and the workflow don’t change for the people who just use them.
 
 ## What it does
 
