@@ -1,7 +1,7 @@
 {
-  "$purpose": "The canonical, machine-readable record of Proofpane's distributed and released builds, plus separately labelled verified CI artifacts: component, version, build date, distribution channel, per-platform sha256, and source commit where stamped. If you are cross-checking a release claim \u2014 human or AI \u2014 this file is the authority. GitHub release pages exist only for the components and versions listed here with a release_url; joining any other surfaces to infer a release history will produce artifacts that do not exist (it has happened: an external audit synthesized a 'v1.5.19 release page dated 23 July' by joining this site's daemon claim to an unrelated tray release page).",
+  "$purpose": "The canonical, machine-readable record of Proofpane's distributed and released builds, plus separately labelled verified CI artifacts: component, version, build date, distribution channel, per-platform sha256, and source commit where stamped. If you are cross-checking a release claim — human or AI — this file is the authority. GitHub release pages exist only for the components and versions listed here with a release_url; joining any other surfaces to infer a release history will produce artifacts that do not exist (it has happened: an external audit synthesized a 'v1.5.19 release page dated 23 July' by joining this site's daemon claim to an unrelated tray release page).",
   "$maintenance": "Appended by the daemon-release CI on every release; guarded by backend/tests/test_release_index.py, which fails the build when the distributed binaries, the source version constants, and this record disagree. Entries marked record:reconstructed were backfilled from git history on 2026-08-03 and carry only what the history supports. Entries marked record:verified-after-publication were added after the event from an identified artifact that was downloaded and interrogated directly; they are evidence-backed but were not written by the publishing transaction itself.",
-  "updated": "2026-08-09",
+  "updated": "2026-08-10",
   "signing_summary": {
     "$read_this_first": "Signing status is PER PLATFORM. macOS is signed and notarized; Windows is unsigned; Linux carries digests only. These are three separate rows: a summary that says 'Proofpane binaries are unsigned' has generalized the Windows row to macOS, where it is false. Every statement here is derived from the per-release entries below and is checkable from the artifacts themselves.",
     "macos": {
@@ -102,7 +102,7 @@
           "version": "1.5.19",
           "build_date": "2026-08-02",
           "status": "superseded",
-          "source": "CI build of 2026-07-28 carrying the Claude Code hook packaging fixes; exact commit not stamped into the binary \u2014 that gap is what BUILD_COMMIT closes from 1.5.20",
+          "source": "CI build of 2026-07-28 carrying the Claude Code hook packaging fixes; exact commit not stamped into the binary — that gap is what BUILD_COMMIT closes from 1.5.20",
           "sha256": {
             "darwin-arm64": "3985f1d6b54abc8f2ef40f35c8980dcf8f1144de386fbc99a4510610e496ea6a",
             "darwin-x86_64": "f407be7721c71f172612e448b98a973cda14ed64bd074b880ac9fe98400a021f",
@@ -110,7 +110,7 @@
             "linux-x86_64": "73d66a597ad954e08ac648e5e83eba1ebb9d901cbbc2d78397e745d4f0d5f06c",
             "windows-amd64": "bdf84fa2c924e438ae790f4f1c79dcb91ab81a410cc29e5114386dffb0f91b37"
           },
-          "note": "Replaced the 2026-07-23 binaries UNDER THE SAME VERSION \u2014 the immutability violation named in policy. windows-x86_64.exe is a filename alias of windows-amd64 (identical bytes).",
+          "note": "Replaced the 2026-07-23 binaries UNDER THE SAME VERSION — the immutability violation named in policy. windows-x86_64.exe is a filename alias of windows-amd64 (identical bytes).",
           "record": "contemporaneous"
         },
         {
@@ -304,6 +304,12 @@
         }
       ],
       "releases": []
+    },
+    "sample_evidence_pack": {
+      "$what": "The sample Evidence Pack the site offers for offline verification ('download a sample & verify it yourself'). Not a program — a signed data artifact. Recorded here because the landing deploy is a distribution channel and every binary it serves must be in this record (backend/tests/test_landing_serves_no_unrecorded_binaries.py; rule created 2026-08-10 after an unrecorded June daemon build was found riding along in /install/downloads/).",
+      "path": "/evidence/sample-pack/proofpane-sample-evidence-pack.zip",
+      "sha256": "88a097acb6ba453a8bc48ed1dd7189949d566034c0afd3e56cf02b8e1191da4c",
+      "signed": "Ed25519 inside the pack (manifest signature) — verify with tools/verify_evidence_pack.py; not an Apple code-signing artifact."
     }
   }
 }
