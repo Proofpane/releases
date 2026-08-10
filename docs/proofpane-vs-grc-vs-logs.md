@@ -1,4 +1,4 @@
-> Mirror of <https://proofpane.com/answers/proofpane-vs-grc-vs-logs/> · synced 2026-08-09 · the canonical, always-current version lives on proofpane.com
+> Mirror of <https://proofpane.com/answers/proofpane-vs-grc-vs-logs/> · synced 2026-08-10 · the canonical, always-current version lives on proofpane.com
 
 # Proofpane vs GRC platforms vs log & observability tools
 
