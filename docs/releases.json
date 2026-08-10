@@ -10,7 +10,23 @@
       "identity": "Developer ID Application: PROOFPANE LIMITED (B94QM75QNG) for apps and disk images; Developer ID Installer: PROOFPANE LIMITED (B94QM75QNG) for installer packages. These are two distinct Apple certificates issued to the same company; a package cannot be signed with the Application certificate.",
       "covers": "Every macOS artifact currently distributed: daemon 1.5.24 (darwin-arm64 + darwin-x86_64), the public Tray 0.3.9 universal DMG, and the public Tray 0.3.9 installer package (.pkg, signed with the Developer ID Installer certificate for MDM deployment). The verified desktop CI build is signed, notarized and stapled as well; it is labelled a CI build for distribution reasons, not signing ones.",
       "stapled": "DMG artifacts are stapled. The bare daemon executable cannot be — Apple defines stapling for .app/.dmg/.pkg — so macOS resolves its notarization ticket online during assessment. 'stapled: false' below is a packaging property, NOT a missing signature.",
-      "verify_yourself": "codesign -dv --verbose=4 <path> names the signer; spctl -a -vvv answers 'accepted / source=Notarized Developer ID'; xcrun stapler validate applies to the DMG."
+      "verify_yourself": "codesign -dv --verbose=4 <path> names the signer; spctl -a -vvv answers 'accepted / source=Notarized Developer ID'; xcrun stapler validate applies to the DMG.",
+      "certificates": {
+        "$why_recorded": "A signing certificate constrains only FUTURE signing: a timestamped signature stays verifiable after its certificate expires, which is why nothing already published is affected by the dates below. These are recorded so backend/tests/test_signing_certificate_expiry.py can fail the build BEFORE a release runs into an expired certificate, rather than discovering it at signing time. Each date was read from the certificate itself: the Application leaf was extracted from the distributed daemon's signature (codesign -d --extract-certificates), the Installer leaf from the published Tray package's chain.",
+        "developer_id_application": {
+          "identity": "Developer ID Application: PROOFPANE LIMITED (B94QM75QNG)",
+          "signs": "app bundles, disk images, bare executables",
+          "issuer_sub_ca": "G2",
+          "expires": "2031-08-07"
+        },
+        "developer_id_installer": {
+          "identity": "Developer ID Installer: PROOFPANE LIMITED (B94QM75QNG)",
+          "signs": "installer packages (.pkg)",
+          "issuer_sub_ca": "G1",
+          "expires": "2027-02-01",
+          "note": "Apple caps a leaf certificate at its issuer's expiry, and this one was issued under the ORIGINAL Developer ID Certification Authority, which expires 2027-02-01 22:12:15 UTC -- the leaf carries that instant exactly. Re-issuing under the G2 Sub-CA (as the Application certificate already is) yields the usual ~5 years. Re-issue before this date; do NOT revoke the old certificate, because revocation is retroactive and would invalidate packages already published under it."
+        }
+      }
     },
     "windows": {
       "signed": false,
