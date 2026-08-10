@@ -1,4 +1,4 @@
-> Mirror of <https://proofpane.com/thinking/who-approved-that/> · synced 2026-08-10 · the canonical, always-current version lives on proofpane.com
+> Mirror of <https://proofpane.com/thinking/who-approved-that/> · synced 2026-08-11 · the canonical, always-current version lives on proofpane.com
 
 [THINKING](https://proofpane.com/thinking/) · 25 JULY 2026
 

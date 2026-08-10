@@ -7,8 +7,8 @@
     "macos": {
       "signed": true,
       "notarized": true,
-      "identity": "Developer ID Application: PROOFPANE LIMITED (B94QM75QNG)",
-      "covers": "Every macOS artifact currently distributed: daemon 1.5.22 (darwin-arm64 + darwin-x86_64) and the public Tray 0.3.8 universal DMG. The verified desktop CI build is signed, notarized and stapled as well; it is labelled a CI build for distribution reasons, not signing ones.",
+      "identity": "Developer ID Application: PROOFPANE LIMITED (B94QM75QNG) for apps and disk images; Developer ID Installer: PROOFPANE LIMITED (B94QM75QNG) for installer packages. These are two distinct Apple certificates issued to the same company; a package cannot be signed with the Application certificate.",
+      "covers": "Every macOS artifact currently distributed: daemon 1.5.24 (darwin-arm64 + darwin-x86_64), the public Tray 0.3.9 universal DMG, and the public Tray 0.3.9 installer package (.pkg, signed with the Developer ID Installer certificate for MDM deployment). The verified desktop CI build is signed, notarized and stapled as well; it is labelled a CI build for distribution reasons, not signing ones.",
       "stapled": "DMG artifacts are stapled. The bare daemon executable cannot be — Apple defines stapling for .app/.dmg/.pkg — so macOS resolves its notarization ticket online during assessment. 'stapled: false' below is a packaging property, NOT a missing signature.",
       "verify_yourself": "codesign -dv --verbose=4 <path> names the signer; spctl -a -vvv answers 'accepted / source=Notarized Developer ID'; xcrun stapler validate applies to the DMG."
     },
@@ -26,7 +26,7 @@
   "policy": {
     "immutability": "A version names exactly one build. The release pipeline refuses an existing tag and cannot replace published assets. One violation predates this policy and is recorded below rather than erased: daemon 1.5.19 was distributed as two different builds (2026-07-23 and 2026-08-02) under the same version.",
     "build_identity": "From daemon 1.5.20 the release workflow stamps the source commit into the binary (BUILD_COMMIT); `airgov_daemon check-update` prints it. A version says which release; the commit says which bytes.",
-    "signing": "Signing is platform-specific and recorded per release. The current distributed macOS daemon v1.5.22 is signed on both architectures with Developer ID Application: PROOFPANE LIMITED (B94QM75QNG) and notarized by Apple. Its bare executable cannot be stapled, so macOS resolves the ticket online during assessment; the protected installer performs that assessment before installation. Proofpane Tray v0.3.8 is an anonymously downloadable public release; its universal macOS DMG is Developer ID-signed, Apple-notarized and stapled. A signed/notarized desktop CI build has also been verified, but no post-certificate desktop app release has anonymous public distribution recorded here. Windows releases are not Authenticode-signed. Linux has no platform-signing claim; published sha256 digests are the integrity reference. Enterprise re-signing remains optional."
+    "signing": "Signing is platform-specific and recorded per release. The current distributed macOS daemon v1.5.24 is signed on both architectures with Developer ID Application: PROOFPANE LIMITED (B94QM75QNG) and notarized by Apple. Its bare executable cannot be stapled, so macOS resolves the ticket online during assessment; the protected installer performs that assessment before installation. Proofpane Tray v0.3.9 is an anonymously downloadable public release carrying two signed macOS artifacts: its universal macOS DMG is Developer ID Application-signed, and its installer package (.pkg, for MDM deployment) is Developer ID Installer-signed; both are Apple-notarized and stapled. A signed/notarized desktop CI build has also been verified, but no post-certificate desktop app release has anonymous public distribution recorded here. Windows releases are not Authenticode-signed. Linux has no platform-signing claim; published sha256 digests are the integrity reference. Enterprise re-signing remains optional."
   },
   "components": {
     "daemon": {
@@ -40,7 +40,7 @@
         {
           "version": "1.5.24",
           "build_date": "2026-08-10",
-          "status": "released",
+          "status": "distributed",
           "visibility": "private",
           "public_distribution": false,
           "release_url": "https://github.com/lywinged/proofpane/releases/tag/daemon-v1.5.24",
@@ -103,7 +103,7 @@
         {
           "version": "1.5.23",
           "build_date": "2026-08-10",
-          "status": "released",
+          "status": "superseded",
           "visibility": "private",
           "public_distribution": false,
           "release_url": "https://github.com/lywinged/proofpane/releases/tag/daemon-v1.5.23",
@@ -166,7 +166,7 @@
         {
           "version": "1.5.22",
           "build_date": "2026-08-07",
-          "status": "distributed",
+          "status": "superseded",
           "release_url": "https://github.com/lywinged/proofpane/releases/tag/daemon-v1.5.22",
           "source_commit": "363d11e0d6a9",
           "sha256": {
@@ -288,10 +288,53 @@
     "tray": {
       "version_source": "version in tray/src-tauri/tauri.conf.json",
       "channels": [
-        "Public release archive: https://github.com/Proofpane/releases/releases/tag/tray-v0.3.8",
+        "Public release archive: https://github.com/Proofpane/releases/releases/tag/tray-v0.3.9",
         "Private source-repository releases tagged tray-v* (authenticated access required; historical entries remain labelled by visibility)"
       ],
       "releases": [
+        {
+          "version": "0.3.9",
+          "build_date": "2026-08-10",
+          "status": "released",
+          "prerelease": false,
+          "visibility": "public",
+          "public_distribution": true,
+          "published_at": "2026-08-10T11:34:51Z",
+          "release_url": "https://github.com/Proofpane/releases/releases/tag/tray-v0.3.9",
+          "source_provenance": {
+            "workflow_run_id": 31364968416,
+            "workflow_run_url": "https://github.com/lywinged/proofpane/actions/runs/31364968416",
+            "workflow_head_commit": "064c7e57954df9388cfaf45c6f8cdc857da53e4a",
+            "tag_commit": "064c7e57954df9388cfaf45c6f8cdc857da53e4a",
+            "private_source_release_url": "https://github.com/lywinged/proofpane/releases/tag/tray-v0.3.9",
+            "note": "The tagged source commit and the workflow head commit are identical. Unlike 0.3.8 the run was started by workflow_dispatch on that commit rather than by a tag push, so the tag/build binding was verified by comparing the run's head SHA with the tag's commit rather than by the tag-push gate. The public Proofpane/releases page carries the exact same artifact bytes and adjacent SHA-256 sidecars."
+          },
+          "sha256": {
+            "linux-appimage": "0026abfcf823573a13d7950cefffc370c9a480a06e2e632496039918762a8e64",
+            "linux-deb": "648f8441e784fe830d98a39c67e72558192a5b19eb4ac9c0e027522b789298d2",
+            "macos-installer-pkg": "5ca84f50b9e803962d8349334552f9a2d8d518a339ae1775f0a34da842105749",
+            "macos-universal-dmg": "2d1fa86a2a0d427a764e7fee87926f4b0e71a0817cf2bcac73f1613dfb3b0573",
+            "windows-x64-msi": "fcdbe33aa72a11d7cf4a89420e0532e315e17f0e10fc34c4fd877c9ad5b72a58"
+          },
+          "signing": {
+            "artifact": "macos-installer-pkg and macos-universal-dmg",
+            "identity": "Developer ID Installer: PROOFPANE LIMITED (B94QM75QNG) for the package; Developer ID Application: PROOFPANE LIMITED (B94QM75QNG) for the DMG",
+            "team_id": "B94QM75QNG",
+            "notarized": true,
+            "stapled": true,
+            "verified_how": "Both macOS artifacts were downloaded anonymously from the public release after publication and re-checked on those bytes. Package: sha256 5ca84f50b9e803962d8349334552f9a2d8d518a339ae1775f0a34da842105749; pkgutil --check-signature reported signed by a developer certificate issued by Apple for distribution, notarization trusted by the Apple notary service, and a trusted timestamp of 2026-08-10 07:16:41 UTC; xcrun stapler validate succeeded; spctl --assess --type install returned accepted / source=Notarized Developer ID / origin=Developer ID Installer: PROOFPANE LIMITED (B94QM75QNG). DMG: sha256 2d1fa86a2a0d427a764e7fee87926f4b0e71a0817cf2bcac73f1613dfb3b0573; codesign --verify --strict reported valid on disk and satisfies its Designated Requirement under Developer ID Application: PROOFPANE LIMITED with a trusted timestamp; xcrun stapler validate succeeded; spctl returned accepted / source=Notarized Developer ID.",
+            "certificate_expiry_note": "The Developer ID Installer certificate is chained to Apple's original Developer ID Certification Authority, which expires 2027-02-01, and Apple caps a leaf at its issuer's expiry. Because the signature carries a trusted timestamp, this package remains verifiable after that date; the expiry constrains signing future packages, not verifying this one."
+          },
+          "platform_assurance": {
+            "macos-installer-pkg": "Developer ID Installer-signed, Apple-notarized and stapled",
+            "macos-universal-dmg": "Developer ID Application-signed, Apple-notarized and stapled",
+            "windows-x64-msi": "not Authenticode-signed",
+            "linux-appimage": "SHA-256 digest only; no platform-signing claim",
+            "linux-deb": "SHA-256 digest only; no platform-signing claim"
+          },
+          "note": "First Tray release to publish a signed macOS installer package alongside the disk image, so the Tray can be deployed by an MDM rather than installed by hand. The package is signed by a different Apple certificate from the disk image: Developer ID Installer signs packages, Developer ID Application signs apps.",
+          "record": "verified-after-publication"
+        },
         {
           "version": "0.3.8",
           "build_date": "2026-08-09",

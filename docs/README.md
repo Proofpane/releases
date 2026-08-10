@@ -3,7 +3,7 @@
 Everything public a cold evaluator needs, mirrored from proofpane.com for
 readers whose egress is allowlisted to developer domains (github.com,
 raw.githubusercontent.com, PyPI) — sandboxed AI agents included. Synced
-2026-08-10; the canonical, always-current versions live on the site.
+2026-08-11; the canonical, always-current versions live on the site.
 
 | File | What it is |
 |---|---|
