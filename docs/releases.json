@@ -38,6 +38,132 @@
       ],
       "releases": [
         {
+          "version": "1.5.24",
+          "build_date": "2026-08-10",
+          "status": "released",
+          "visibility": "private",
+          "public_distribution": false,
+          "release_url": "https://github.com/lywinged/proofpane/releases/tag/daemon-v1.5.24",
+          "source_commit": "58974fb34aa6",
+          "sha256": {
+            "darwin-arm64": "6ae351387fe6c450b0ede6d858a7b5d81be0c19a4e221c7259aa88e47262e48f",
+            "darwin-x86_64": "a2dc705d51ea69f01d06a95d528c15e88389fba84fbea7791d7ca5d56994b93b",
+            "linux-aarch64": "2d5e8aa5a8d658eec4718ecbc8d433013f58de03e81fb7ecc872ffe5f6d82eee",
+            "linux-x86_64": "36e02498f21b4f65f8235a54546c1b5eb1ee69667a1c97fd3407ff8dfea45dae",
+            "windows-amd64": "0cbf4b61d55d78e52c2bb292e76524d86d9a32340ea911837e39c72f9cb53a1f"
+          },
+          "signing": {
+            "identity": "Developer ID Application: PROOFPANE LIMITED (B94QM75QNG)",
+            "team_id": "B94QM75QNG",
+            "notarized": true,
+            "stapled": false,
+            "stapled_note": "A bare executable cannot carry a stapled ticket; Apple's assessment resolves the notarization ticket online when it runs.",
+            "verified_how": "After assembly, Apple's codesign verified the exact PROOFPANE LIMITED identity and team B94QM75QNG; Gatekeeper reported accepted / source=Notarized Developer ID.",
+            "platforms": {
+              "darwin-arm64": {
+                "status": "developer-id-signed-and-apple-notarized",
+                "identity": "Developer ID Application: PROOFPANE LIMITED (B94QM75QNG)",
+                "team_id": "B94QM75QNG",
+                "notarized": true,
+                "stapled": false,
+                "stapled_note": "A bare executable cannot carry a stapled ticket; Apple's assessment resolves the notarization ticket online when it runs.",
+                "verified_how": "After assembly, Apple's codesign verified the exact PROOFPANE LIMITED identity and team B94QM75QNG; Gatekeeper reported accepted / source=Notarized Developer ID."
+              },
+              "darwin-x86_64": {
+                "status": "developer-id-signed-and-apple-notarized",
+                "identity": "Developer ID Application: PROOFPANE LIMITED (B94QM75QNG)",
+                "team_id": "B94QM75QNG",
+                "notarized": true,
+                "stapled": false,
+                "stapled_note": "A bare executable cannot carry a stapled ticket; Apple's assessment resolves the notarization ticket online when it runs.",
+                "verified_how": "After assembly, Apple's codesign verified the exact PROOFPANE LIMITED identity and team B94QM75QNG; Gatekeeper reported accepted / source=Notarized Developer ID."
+              },
+              "linux-aarch64": {
+                "status": "sha256-only",
+                "platform_signing_claim": false,
+                "integrity": "sha256",
+                "note": "No platform code-signing claim; the published SHA-256 digest is the integrity reference."
+              },
+              "linux-x86_64": {
+                "status": "sha256-only",
+                "platform_signing_claim": false,
+                "integrity": "sha256",
+                "note": "No platform code-signing claim; the published SHA-256 digest is the integrity reference."
+              },
+              "windows-amd64": {
+                "status": "unsigned",
+                "authenticode_signed": false,
+                "integrity": "sha256",
+                "note": "No Authenticode certificate; the published SHA-256 digest is the integrity reference."
+              }
+            }
+          },
+          "record": "contemporaneous"
+        },
+        {
+          "version": "1.5.23",
+          "build_date": "2026-08-10",
+          "status": "released",
+          "visibility": "private",
+          "public_distribution": false,
+          "release_url": "https://github.com/lywinged/proofpane/releases/tag/daemon-v1.5.23",
+          "source_commit": "74367da78296",
+          "sha256": {
+            "darwin-arm64": "dcfa1eca192123be7a03a570e202105f0149552d197fee37ba9e51d4170d9e8a",
+            "darwin-x86_64": "05d624edb32ec0cf6f33195b1f7d8bca99cbd2d4775f2213b30036d02baa4482",
+            "linux-aarch64": "24c431df4fd0c632561c8badfc046543f9676a969a3ec090259e122728bbda53",
+            "linux-x86_64": "8869aa01cb46518e80ea5884ad0ba691b5a18d3283a363baf18c7ce0ec5765f2",
+            "windows-amd64": "8ca856470c3746e10b343efbd95aee7bdea85056ee0de567a331e12098779227"
+          },
+          "signing": {
+            "identity": "Developer ID Application: PROOFPANE LIMITED (B94QM75QNG)",
+            "team_id": "B94QM75QNG",
+            "notarized": true,
+            "stapled": false,
+            "stapled_note": "A bare executable cannot carry a stapled ticket; Apple's assessment resolves the notarization ticket online when it runs.",
+            "verified_how": "After assembly, Apple's codesign verified the exact PROOFPANE LIMITED identity and team B94QM75QNG; Gatekeeper reported accepted / source=Notarized Developer ID.",
+            "platforms": {
+              "darwin-arm64": {
+                "status": "developer-id-signed-and-apple-notarized",
+                "identity": "Developer ID Application: PROOFPANE LIMITED (B94QM75QNG)",
+                "team_id": "B94QM75QNG",
+                "notarized": true,
+                "stapled": false,
+                "stapled_note": "A bare executable cannot carry a stapled ticket; Apple's assessment resolves the notarization ticket online when it runs.",
+                "verified_how": "After assembly, Apple's codesign verified the exact PROOFPANE LIMITED identity and team B94QM75QNG; Gatekeeper reported accepted / source=Notarized Developer ID."
+              },
+              "darwin-x86_64": {
+                "status": "developer-id-signed-and-apple-notarized",
+                "identity": "Developer ID Application: PROOFPANE LIMITED (B94QM75QNG)",
+                "team_id": "B94QM75QNG",
+                "notarized": true,
+                "stapled": false,
+                "stapled_note": "A bare executable cannot carry a stapled ticket; Apple's assessment resolves the notarization ticket online when it runs.",
+                "verified_how": "After assembly, Apple's codesign verified the exact PROOFPANE LIMITED identity and team B94QM75QNG; Gatekeeper reported accepted / source=Notarized Developer ID."
+              },
+              "linux-aarch64": {
+                "status": "sha256-only",
+                "platform_signing_claim": false,
+                "integrity": "sha256",
+                "note": "No platform code-signing claim; the published SHA-256 digest is the integrity reference."
+              },
+              "linux-x86_64": {
+                "status": "sha256-only",
+                "platform_signing_claim": false,
+                "integrity": "sha256",
+                "note": "No platform code-signing claim; the published SHA-256 digest is the integrity reference."
+              },
+              "windows-amd64": {
+                "status": "unsigned",
+                "authenticode_signed": false,
+                "integrity": "sha256",
+                "note": "No Authenticode certificate; the published SHA-256 digest is the integrity reference."
+              }
+            }
+          },
+          "record": "contemporaneous"
+        },
+        {
           "version": "1.5.22",
           "build_date": "2026-08-07",
           "status": "distributed",
