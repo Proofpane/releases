@@ -1,4 +1,4 @@
-> Mirror of <https://proofpane.com/trust/> · synced 2026-08-11 · the canonical, always-current version lives on proofpane.com
+> Mirror of <https://proofpane.com/trust/> · synced 2026-08-12 · the canonical, always-current version lives on proofpane.com
 
 # Trust Center
 
@@ -66,6 +66,12 @@ Last updated: 2026-08-10 · Security contact: [Louie.Lu@proofpane.com](mailto:Lo
 - **Cloudflare R2** (S3-compatible) — encrypted backups and anchor export.
 - **Model providers** (Anthropic, OpenAI, Google, DeepSeek, or any OpenAI-compatible endpoint) — only for calls the customer routes through the gateway, under the customer's own keys where configured.
 - **Resend / Mailgun** — outbound email, if the customer enables email features.
+
+## Upstream work on an independent standard — the founder's own
+
+Louie Lu's pull requests are merged into [**trace-spec**](https://github.com/agentrust-io/trace-spec) (TRACE, an open attestation standard for agentic AI governance) and its conformance-test repository — neither owned, maintained nor funded by Proofpane. What was merged: conformance vectors for receipt rules that had none, profile-cutover enforcement at verification time, RFC 8785 portable vectors, and a schema resync that fails on the next drift. Those gaps were found by applying the **load-bearing-coverage criterion** — from the founder's third paper, a mechanical test of whether a conformance suite can be passed without doing the work — to that standard, whose receipts are its first corpus — the method run against someone else's artifact, the fixes accepted by their maintainer.
+
+This is the founder's personal contribution, not the company's. Counts are deliberately not quoted because they move on the maintainer's schedule — the [current state of every pull request](https://github.com/agentrust-io/trace-spec/pulls?q=is%3Apr+author%3Alywinged) is one query. A merged pull request accepts specific fixes; it is not an endorsement of Proofpane or a certification of it, and the criterion has still not been applied to Proofpane's own conformance suite.
 
 ## Community directory listings — recognition, not security testing
 
