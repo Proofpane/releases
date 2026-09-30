@@ -33,6 +33,6 @@ BASE_URL=https://your-deployment DEVICE_ID=<id> TOKEN=<device-token> \
 
 Numbers scale with hardware; a single node holds a lower rate. We publish the ceilings and the trade-offs (latency vs throughput, the lock-convoy vs decoupled-sealer story) rather than a single hero figure — ask for the perf notes if you want the full methodology.
 
-**Tiers we won’t pretend about.** Two claim-classes have no public artifact yet, and we say so: a **third-party penetration test** and **SOC 2 Type II** are stage-gated (see the [Trust Center](https://proofpane.com/trust/) roadmap), and there is **no customer case study** yet — we’re onboarding founding design partners. Those are the honest gaps; everything above this line, you can check today.
+**Tiers we won’t pretend about.** Two claim-classes have no public artifact yet, and we say so: a **third-party penetration test** and **SOC 2 Type II** are stage-gated (see the [Trust Center](https://proofpane.com/trust/) roadmap). Those are the honest gaps; everything above this line, you can check today.
 
 Found a claim on the site without a row here? Email [Louie.Lu@proofpane.com](mailto:Louie.Lu@proofpane.com) — it either gets an evidence link or gets cut.

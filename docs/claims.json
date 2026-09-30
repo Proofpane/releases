@@ -356,25 +356,6 @@
       "status": "current"
     },
     {
-      "id": "self-hosted-never-customer-run",
-      "statement": "The self-hosted deployment model ships as Docker images and is the same product, but a full deployment inside a customer environment has not been run yet.",
-      "surfaces": [
-        {
-          "file": "landing/llms.txt",
-          "anchor": "has not been run yet"
-        }
-      ],
-      "bases": [
-        {
-          "kind": "founder-attested",
-          "ref": "the claim is an absence — there is no deployment to point at, and saying so plainly is the point"
-        }
-      ],
-      "verified_at": "2026-08-03",
-      "verified_how": "Unverifiable by construction; carried here so the registry holds the unflattering claims to the same standard as the flattering ones.",
-      "status": "current"
-    },
-    {
       "id": "legal-entity-nz-company",
       "statement": "Proofpane is operated by PROOFPANE LIMITED, a New Zealand limited company incorporated 3 June 2026 (company number 9434021, NZBN 9429053715692), registered office 22 Harper Street, Chatswood, Auckland 0626.",
       "surfaces": [
