@@ -1,14 +1,14 @@
 {
   "$purpose": "The canonical, machine-readable record of Proofpane's distributed and released builds, plus separately labelled verified CI artifacts: component, version, build date, distribution channel, per-platform sha256, and source commit where stamped. If you are cross-checking a release claim — human or AI — this file is the authority. GitHub release pages exist only for the components and versions listed here with a release_url; joining any other surfaces to infer a release history will produce artifacts that do not exist (it has happened: an external audit synthesized a 'v1.5.19 release page dated 23 July' by joining this site's daemon claim to an unrelated tray release page).",
   "$maintenance": "Appended by the daemon-release CI on every release; guarded by backend/tests/test_release_index.py, which fails the build when the distributed binaries, the source version constants, and this record disagree. Entries marked record:reconstructed were backfilled from git history on 2026-08-03 and carry only what the history supports. Entries marked record:verified-after-publication were added after the event from an identified artifact that was downloaded and interrogated directly; they are evidence-backed but were not written by the publishing transaction itself.",
-  "updated": "2026-08-10",
+  "updated": "2026-10-28",
   "signing_summary": {
     "$read_this_first": "Signing status is PER PLATFORM. macOS is signed and notarized; Windows is unsigned; Linux carries digests only. These are three separate rows: a summary that says 'Proofpane binaries are unsigned' has generalized the Windows row to macOS, where it is false. Every statement here is derived from the per-release entries below and is checkable from the artifacts themselves.",
     "macos": {
       "signed": true,
       "notarized": true,
       "identity": "Developer ID Application: PROOFPANE LIMITED (B94QM75QNG) for apps and disk images; Developer ID Installer: PROOFPANE LIMITED (B94QM75QNG) for installer packages. These are two distinct Apple certificates issued to the same company; a package cannot be signed with the Application certificate.",
-      "covers": "Every macOS artifact currently distributed: daemon 1.5.24 (darwin-arm64 + darwin-x86_64), the public Tray 0.3.9 universal DMG, and the public Tray 0.3.9 installer package (.pkg, signed with the Developer ID Installer certificate for MDM deployment). The verified desktop CI build is signed, notarized and stapled as well; it is labelled a CI build for distribution reasons, not signing ones.",
+      "covers": "Every macOS artifact currently distributed: daemon 1.5.25 (darwin-arm64 + darwin-x86_64), the public Tray 0.3.9 universal DMG, and the public Tray 0.3.9 installer package (.pkg, signed with the Developer ID Installer certificate for MDM deployment). The verified desktop CI build is signed, notarized and stapled as well; it is labelled a CI build for distribution reasons, not signing ones.",
       "stapled": "DMG artifacts are stapled. The bare daemon executable cannot be — Apple defines stapling for .app/.dmg/.pkg — so macOS resolves its notarization ticket online during assessment. 'stapled: false' below is a packaging property, NOT a missing signature.",
       "verify_yourself": "codesign -dv --verbose=4 <path> names the signer; spctl -a -vvv answers 'accepted / source=Notarized Developer ID'; xcrun stapler validate applies to the DMG.",
       "certificates": {
@@ -42,7 +42,7 @@
   "policy": {
     "immutability": "A version names exactly one build. The release pipeline refuses an existing tag and cannot replace published assets. One violation predates this policy and is recorded below rather than erased: daemon 1.5.19 was distributed as two different builds (2026-07-23 and 2026-08-02) under the same version.",
     "build_identity": "From daemon 1.5.20 the release workflow stamps the source commit into the binary (BUILD_COMMIT); `airgov_daemon check-update` prints it. A version says which release; the commit says which bytes.",
-    "signing": "Signing is platform-specific and recorded per release. The current distributed macOS daemon v1.5.24 is signed on both architectures with Developer ID Application: PROOFPANE LIMITED (B94QM75QNG) and notarized by Apple. Its bare executable cannot be stapled, so macOS resolves the ticket online during assessment; the protected installer performs that assessment before installation. Proofpane Tray v0.3.9 is an anonymously downloadable public release carrying two signed macOS artifacts: its universal macOS DMG is Developer ID Application-signed, and its installer package (.pkg, for MDM deployment) is Developer ID Installer-signed; both are Apple-notarized and stapled. A signed/notarized desktop CI build has also been verified, but no post-certificate desktop app release has anonymous public distribution recorded here. Windows releases are not Authenticode-signed. Linux has no platform-signing claim; published sha256 digests are the integrity reference. Enterprise re-signing remains optional."
+    "signing": "Signing is platform-specific and recorded per release. The current distributed macOS daemon v1.5.25 is signed on both architectures with Developer ID Application: PROOFPANE LIMITED (B94QM75QNG) and notarized by Apple. Its bare executable cannot be stapled, so macOS resolves the ticket online during assessment; the protected installer performs that assessment before installation. Proofpane Tray v0.3.9 is an anonymously downloadable public release carrying two signed macOS artifacts: its universal macOS DMG is Developer ID Application-signed, and its installer package (.pkg, for MDM deployment) is Developer ID Installer-signed; both are Apple-notarized and stapled. A signed/notarized desktop CI build has also been verified, but no post-certificate desktop app release has anonymous public distribution recorded here. Windows releases are not Authenticode-signed. Linux has no platform-signing claim; published sha256 digests are the integrity reference. Enterprise re-signing remains optional."
   },
   "components": {
     "daemon": {
@@ -54,9 +54,72 @@
       ],
       "releases": [
         {
+          "version": "1.5.25",
+          "build_date": "2026-10-28",
+          "status": "distributed",
+          "visibility": "private",
+          "public_distribution": false,
+          "release_url": "https://github.com/lywinged/proofpane/releases/tag/daemon-v1.5.25",
+          "source_commit": "7d5db3f5ffb2",
+          "sha256": {
+            "darwin-arm64": "c59dcad0e4f5af2355bf85013a957d7c0ac8af4183546da3285c764b221b04a1",
+            "darwin-x86_64": "bc5875ea3b3dddc33e99ea854f767cabf73931338e7c1985fe7d6e15bcae87a5",
+            "linux-aarch64": "a3cd0e30e0420b1ef4f3e72dbe728cfe36cbd38bedb9a2bf50c8c30d222410cc",
+            "linux-x86_64": "5db6d4e1729266fa05cafeebe651c85513d0b87734ed29809d5189dd0fc9ec3a",
+            "windows-amd64": "5cabf721f4f3d19f4a445ccbb615aa856743427804d75aa1f2e7d095726edc83"
+          },
+          "signing": {
+            "identity": "Developer ID Application: PROOFPANE LIMITED (B94QM75QNG)",
+            "team_id": "B94QM75QNG",
+            "notarized": true,
+            "stapled": false,
+            "stapled_note": "A bare executable cannot carry a stapled ticket; Apple's assessment resolves the notarization ticket online when it runs.",
+            "verified_how": "After assembly, Apple's codesign verified the exact PROOFPANE LIMITED identity and team B94QM75QNG; Gatekeeper reported accepted / source=Notarized Developer ID.",
+            "platforms": {
+              "darwin-arm64": {
+                "status": "developer-id-signed-and-apple-notarized",
+                "identity": "Developer ID Application: PROOFPANE LIMITED (B94QM75QNG)",
+                "team_id": "B94QM75QNG",
+                "notarized": true,
+                "stapled": false,
+                "stapled_note": "A bare executable cannot carry a stapled ticket; Apple's assessment resolves the notarization ticket online when it runs.",
+                "verified_how": "After assembly, Apple's codesign verified the exact PROOFPANE LIMITED identity and team B94QM75QNG; Gatekeeper reported accepted / source=Notarized Developer ID."
+              },
+              "darwin-x86_64": {
+                "status": "developer-id-signed-and-apple-notarized",
+                "identity": "Developer ID Application: PROOFPANE LIMITED (B94QM75QNG)",
+                "team_id": "B94QM75QNG",
+                "notarized": true,
+                "stapled": false,
+                "stapled_note": "A bare executable cannot carry a stapled ticket; Apple's assessment resolves the notarization ticket online when it runs.",
+                "verified_how": "After assembly, Apple's codesign verified the exact PROOFPANE LIMITED identity and team B94QM75QNG; Gatekeeper reported accepted / source=Notarized Developer ID."
+              },
+              "linux-aarch64": {
+                "status": "sha256-only",
+                "platform_signing_claim": false,
+                "integrity": "sha256",
+                "note": "No platform code-signing claim; the published SHA-256 digest is the integrity reference."
+              },
+              "linux-x86_64": {
+                "status": "sha256-only",
+                "platform_signing_claim": false,
+                "integrity": "sha256",
+                "note": "No platform code-signing claim; the published SHA-256 digest is the integrity reference."
+              },
+              "windows-amd64": {
+                "status": "unsigned",
+                "authenticode_signed": false,
+                "integrity": "sha256",
+                "note": "No Authenticode certificate; the published SHA-256 digest is the integrity reference."
+              }
+            }
+          },
+          "record": "contemporaneous"
+        },
+        {
           "version": "1.5.24",
           "build_date": "2026-08-10",
-          "status": "distributed",
+          "status": "superseded",
           "visibility": "private",
           "public_distribution": false,
           "release_url": "https://github.com/lywinged/proofpane/releases/tag/daemon-v1.5.24",
