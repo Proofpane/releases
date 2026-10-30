@@ -1,4 +1,4 @@
-> Mirror of <https://proofpane.com/trust/> · synced 2026-10-29 · the canonical, always-current version lives on proofpane.com
+> Mirror of <https://proofpane.com/trust/> · synced 2026-10-31 · the canonical, always-current version lives on proofpane.com
 
 # Trust Center
 
