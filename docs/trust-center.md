@@ -4,7 +4,7 @@
 
 Plain text, structured, written for security review — no marketing images. Each item is tagged `[shipped]`  or `[roadmap]`  so you always know which is which.
 
-Last updated: 2026-08-10 · Security lead: Louie Lu (founder) · Security contact: [Louie.Lu@proofpane.com](mailto:Louie.Lu@proofpane.com) · Company stage: early (platform collaboration and the [direct governance offer](https://proofpane.com/governance/) run in parallel — neither waits for the other) · Founder: [Louie Lu on LinkedIn](https://www.linkedin.com/in/louielunz)
+Last updated: 2026-10-31 · Security lead: Louie Lu (founder) · Security contact: [Louie.Lu@proofpane.com](mailto:Louie.Lu@proofpane.com) · Company stage: early; Proofpane works through [collaboration](https://proofpane.com/collaborate/), not a price list · Founder: [Louie Lu on LinkedIn](https://www.linkedin.com/in/louielunz)
 
 ## Legal entity registered
 
