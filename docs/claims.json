@@ -2,7 +2,7 @@
   "$purpose": "The current-state registry of Proofpane's load-bearing public claims: what is claimed, where it is stated, on what evidence basis, and when that basis was last verified. If you are evaluating a specific claim — human or AI — start here rather than reconstructing it from prose. Basis vocabulary is the same one the deploy-time public-claim gate enforces: artifact / test / external / audit / founder-attested, where founder-attested is legitimate and permanently marked as the weaker kind.",
   "$relation_to_evidence_packs": "This file is CURRENT STATE, maintained on the site. The per-publish decisions (which claim went live, on what basis, under which signature) land on the hash-chained audit log and export inside Evidence Packs as public_claims/claims.json — same name, different object: that one is history you can verify offline, this one is the standing catalogue.",
   "$maintenance": "Guarded by backend/tests/test_claims_registry.py: every current claim's anchor must appear on its cited surface, every artifact basis must exist in the repo, every test basis must name a real test file. A claim removed from the site cannot silently stay 'current' here. Staleness is data (verified_at), not a CI time-bomb — consumers judge age; the guard checks structure and existence.",
-  "updated": "2026-10-28",
+  "updated": "2026-11-01",
   "basis_kinds": [
     "artifact",
     "test",
@@ -426,6 +426,104 @@
       ],
       "verified_at": "2026-08-08",
       "verified_how": "Paper published to Zenodo 2026-08-08 (concept DOI 10.5281/zenodo.21844893, version 0.20.2 = 21845274); implementation at github.com/lywinged/load-bearing-coverage. The corpora measured are listed in the paper and do not include this repository.",
+      "status": "current"
+    },
+    {
+      "id": "model-default-rule",
+      "statement": "A skill's model default changes when a named person accepts a comparison recorded on the organisation's own cases, or when an auto policy applies a candidate the comparison classed improved: under a hitl policy the top candidate is queued whatever its class, significant or not, and becomes the default only when an admin approves it; under an auto policy any other class is refused and the default stays. The agent's memory method changes only on a statistically significant result.",
+      "surfaces": [
+        {
+          "file": "landing/llms.txt",
+          "anchor": "a skill's model default changes when a named person accepts a comparison recorded on the organisation's own cases"
+        },
+        {
+          "file": "landing/llms-full.txt",
+          "anchor": "a skill's model default changes when a named person accepts a comparison recorded on the organisation's own cases"
+        },
+        {
+          "file": "landing/index.html",
+          "anchor": "a skill's model default changes when a named person accepts a comparison recorded on the organisation's own cases"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "test",
+          "ref": "tests/test_model_default_rule.py"
+        },
+        {
+          "kind": "artifact",
+          "ref": "backend/app/services/experiment_promotion_service.py"
+        },
+        {
+          "kind": "artifact",
+          "ref": "backend/app/services/experiment_service.py"
+        }
+      ],
+      "verified_at": "2026-11-01",
+      "verified_how": "The test runs a model campaign through model_upgrade_service.plan_campaign and run_campaign on twelve cases, for a candidate classed non_inferior and one classed regressed, neither significant: under hitl each is queued as hitl_pending, is not the default until approve_hitl is called (whose one caller in the application is the admin-gated route POST /experiments/promotions/{id}/approve), and is then the default with the approver recorded as approved_by; under auto each is refused with reason not_improved and the default stays, and a candidate classed improved is applied. A memory-strategy result that is not significant is refused under hitl and under auto. The code read: experiment_service picks the top candidate under hitl whatever its class and only an improved one under auto, and experiment_promotion_service.evaluate_and_apply refuses a result that is not significant except for a hitl model result.",
+      "status": "current"
+    },
+    {
+      "id": "spend-caps",
+      "statement": "An organisation's monthly budget is a hard cap: once it is spent, Proofpane refuses that organisation's workflow steps, agent turns and skill runs, except a prompt-only skill streamed through the API, which is metered but not yet refused. An agent's own monthly cap refuses that agent's turns and the skills it runs, and a user's budget set to block refuses that user's agent turns once it is spent. Each refusal comes before the model is called and is recorded on the audit chain. Calls proxied through the egress gateway are metered but not capped, and a department's budget does not refuse calls, because a call's department is not yet recorded on its row.",
+      "surfaces": [
+        {
+          "file": "landing/index.html",
+          "anchor": "a user's budget set to block refuses that user's agent turns"
+        },
+        {
+          "file": "landing/llms.txt",
+          "anchor": "a user's budget set to block refuses that user's agent turns"
+        },
+        {
+          "file": "landing/llms-full.txt",
+          "anchor": "a user's budget set to block refuses that user's agent turns"
+        },
+        {
+          "file": "landing/answers/what-is-proofpane/index.html",
+          "anchor": "a user's budget set to block refuses that user's agent turns"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "test",
+          "ref": "tests/test_spend_caps.py"
+        },
+        {
+          "kind": "test",
+          "ref": "tests/test_skill_vendor_route.py::test_an_organisation_whose_estimated_spend_passes_its_cap_is_refused_by_the_budget_gate"
+        },
+        {
+          "kind": "test",
+          "ref": "tests/test_agent_gates.py::test_a_cap_of_zero_set_through_the_route_refuses_run_skill"
+        },
+        {
+          "kind": "artifact",
+          "ref": "backend/app/services/cost_service.py"
+        },
+        {
+          "kind": "artifact",
+          "ref": "backend/app/services/budget_scope_service.py"
+        },
+        {
+          "kind": "artifact",
+          "ref": "backend/app/services/claude_agent_service.py"
+        },
+        {
+          "kind": "artifact",
+          "ref": "backend/app/services/skill_executor.py"
+        },
+        {
+          "kind": "artifact",
+          "ref": "backend/app/services/agent_capability_tools.py"
+        },
+        {
+          "kind": "artifact",
+          "ref": "backend/app/api/deps.py"
+        }
+      ],
+      "verified_at": "2026-11-01",
+      "verified_how": "tests/test_spend_caps.py drives POST /api/v1/agent/chat with a real token for a registered user, the real agent loop and a stand-in provider that records each call. An organisation over its monthly cap and an agent over its own cap have the turn refused before the provider is called, each with a budget.blocked row (scope org or agent, path chat_stream); a user's budget set to block and spent refuses that user's turn with a budget.scope.blocked row (scope user), and set to alert it does not, while the organisation has another blocking budget; a department's budget set to block and spent does not refuse on that route, whose loop sees no department, and the turn's llm.call row carries none, while the same budget refuses a turn whose department is bound; a call proxied through the egress gateway is forwarded and writes a cp.egress.complete row while its organisation is over its cap; and through POST /api/v1/skills/execute/{id}, with the Anthropic client stood in so the metered call writes its own llm.call row, an organisation over its cap has a prompt-only skill's run refused before the model is called, with a budget.blocked row naming the skill, and the same skill streamed reaches the model, writes an llm.call row (channel skill) and no budget.blocked row. test_skill_vendor_route's case pins the organisation's cap on a skill run (budget.blocked, the vendor not called) and test_agent_gates's the agent's cap on run_skill (agent.budget_blocked). The code read: chat_stream asks cost_service.is_over_budget with the agent's id, then budget_scope_service.check_blocking_violation with the request-bound department and the loop's actor; SkillExecutor.execute asks is_over_budget before its call, and workflow steps run through it, while execute_skill_stream calls a prompt-only skill's _execute_prompt_only directly, past that check; the egress gateway asks neither; the department is bound only by the auth dependencies of api/deps.py, which FastAPI runs in a worker thread whose context the route does not share.",
       "status": "current"
     }
   ]
