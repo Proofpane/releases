@@ -48,8 +48,11 @@ match and is rejected before any signature is checked.
 **Honest boundary:** pinning does not yet defend against a backdated whole-chain
 rebuild by the publisher itself. The rigorous fix is an *external anchor* — RFC
 3161 timestamp, an RFC 6962 / Certificate-Transparency-style log, or Sigstore
-Rekor — binding the chain head to a rail neither party controls. Self-signed
-chain-head anchors ship today; external-transparency-log anchoring is on the
+Rekor — binding the chain head to a rail neither party controls. The audit
+log self-signs its chain head on a schedule, but no pack carries those signed
+anchors now: this sample, an evidence-pack/1.4, holds none, and a pack from
+evidence-pack/1.7 leaves them out, since each anchor pins only the chain of the
+organisation that owns the head row. External-transparency-log anchoring is on the
 roadmap, not shipped. This is the spec (invariant II: independent evidence needs
 a rail the audited party can't control) held to its own line, in public.
 
