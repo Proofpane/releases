@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 PROOFPANE LIMITED
+# Licensed under the Apache License 2.0, whose full text is LICENSE-Apache-2.0.txt beside this file.
 """
 Standalone verifier for Proofpane Evidence Packs.
 

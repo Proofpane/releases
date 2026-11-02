@@ -257,6 +257,45 @@
       "status": "current"
     },
     {
+      "id": "verifier-open-source-apache-2-0",
+      "statement": "The Evidence Pack's standalone offline verifier is open source under the Apache License 2.0: the copy served beside the sample Evidence Pack carries the SPDX identifier Apache-2.0 at its top, and the licence's full text is published beside it.",
+      "surfaces": [
+        {
+          "file": "landing/for-compliance/index.html",
+          "anchor": "using a standalone verifier that is open source under the Apache License 2.0"
+        },
+        {
+          "file": "landing/for-compliance/index.html",
+          "anchor": "Standalone offline verifier (open source, Apache-2.0)"
+        },
+        {
+          "file": "landing/for-compliance/index.html",
+          "anchor": "The Evidence Pack verifier is a standalone script, open source under the Apache License 2.0, so your auditor can read what it checks."
+        },
+        {
+          "file": "landing/for-compliance/index.html",
+          "anchor": "The verifier is standalone and open source under the Apache License 2.0"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "artifact",
+          "ref": "tools/LICENSE-Apache-2.0.txt"
+        },
+        {
+          "kind": "artifact",
+          "ref": "landing/evidence/sample-pack/LICENSE-Apache-2.0.txt"
+        },
+        {
+          "kind": "test",
+          "ref": "tests/test_verifier_licence.py"
+        }
+      ],
+      "verified_at": "2026-11-01",
+      "verified_how": "Read in this repository on 2026-11-01: tools/verify_evidence_pack.py and landing/evidence/sample-pack/verify_evidence_pack.py, the copy served at /evidence/sample-pack/, each carry SPDX-License-Identifier: Apache-2.0 under their first line, with a line naming LICENSE-Apache-2.0.txt beside them; both licence files have the sha256 of the text the Apache Software Foundation publishes at https://www.apache.org/licenses/LICENSE-2.0.txt, fetched on 2026-11-01 (11358 bytes). The test basis checks the headers, both digests and these anchors. The public GitHub mirror takes the licence text beside its copy at its next sync.",
+      "status": "current"
+    },
+    {
       "id": "scale-1800-governed-calls",
       "statement": "Sustained ~1,800 governed calls/second across three nodes with the audit chain still verify-valid under concurrent load.",
       "surfaces": [

@@ -16,7 +16,8 @@ No Proofpane account. No API. No trusting us.
 | File | sha256 |
 |---|---|
 | `proofpane-sample-evidence-pack.zip` | `88a097acb6ba453a8bc48ed1dd7189949d566034c0afd3e56cf02b8e1191da4c` |
-| `verify_evidence_pack.py` (standalone verifier) | `4d8026b3ed0f9e39a0bf35a01aee3028b3b8fd189b8116f54df5709448dcba29` |
+| `verify_evidence_pack.py` (standalone verifier) | `1b1d9253b84b24198cbd50b03a9049d61150e29839786f2b320c27a9474e6c19` |
+| `LICENSE-Apache-2.0.txt` (the verifier's licence, Apache License 2.0) | `cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30` |
 | `signing-key.pem` (publisher key, published out-of-band) | `92a517b7893084bb183299b40a4ba62a41af5655f6e1af43d047d60950d2d30b` |
 
 Raw URLs (allowlist-friendly):
@@ -24,6 +25,7 @@ Raw URLs (allowlist-friendly):
 ```
 curl -LO https://raw.githubusercontent.com/Proofpane/releases/main/evidence/proofpane-sample-evidence-pack.zip
 curl -LO https://raw.githubusercontent.com/Proofpane/releases/main/evidence/verify_evidence_pack.py
+curl -LO https://raw.githubusercontent.com/Proofpane/releases/main/evidence/LICENSE-Apache-2.0.txt
 curl -LO https://raw.githubusercontent.com/Proofpane/releases/main/evidence/signing-key.pem
 ```
 
