@@ -1,4 +1,4 @@
-> Mirror of <https://proofpane.com/trust/> · synced 2026-11-02 · the canonical, always-current version lives on proofpane.com
+> Mirror of <https://proofpane.com/trust/> · synced 2026-11-03 · the canonical, always-current version lives on proofpane.com
 
 # Trust Center
 
@@ -37,7 +37,7 @@ Last updated: 2026-10-31 · Security lead: Louie Lu (founder) · Security contac
 ## Audit-log integrity `[shipped]`
 
 - Append-only, SHA-256 hash-chained audit log with a **database-level immutability trigger** — sealed rows cannot be updated even by the application.
-- **Ed25519 chain-head anchoring:** the chain head is signed on a schedule and, where an off-box store is configured, each anchor is exported there; the daily integrity check compares the chain with the newest exported anchor, so deletion or substitution of anchored history is detectable after the database is lost and restored. Each anchor pins only the chain of the organisation that owns the head row, and an organisation’s evidence pack (1.7) leaves the anchors out.
+- **Ed25519 chain-head anchoring:** the daily integrity check signs each organisation’s chain head on a run where its walk of the chain and its check of the anchors both pass and, where an off-box store is configured, exports the new anchors there; the same check compares each organisation’s chain with its newest exported anchor, so deletion or substitution of anchored history is detectable after the database is lost and restored. An organisation’s evidence pack (1.8) carries that organisation’s own anchors whose head falls in the pack’s range, and the verifier checks each one’s signature and, where the head row is in the pack, that row’s hash; when an anchor was signed is not part of what is signed.
 - **Evidence Packs** are Ed25519-signed and verify with a standalone offline CLI — your auditor needs no Proofpane account and does not have to trust our backend.
 - Daily integrity cron re-verifies the chain and records the check itself on the chain.
 

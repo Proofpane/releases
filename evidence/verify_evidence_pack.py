@@ -46,6 +46,11 @@ def fail(msg: str) -> None:
     print(f"{RED}✗{RESET} {msg}")
 
 
+def not_checked(msg: str) -> None:
+    """A check with nothing in the pack to check: neither a pass nor a failure."""
+    print(f"{YELLOW}○{RESET} {msg}")
+
+
 def info(msg: str) -> None:
     print(f"{DIM}  {msg}{RESET}")
 
@@ -75,6 +80,30 @@ def _compute_audit_hash(row: dict, prev_hash: str) -> str:
     h = hashlib.sha256()
     h.update("\x1f".join(parts).encode("utf-8"))
     return h.hexdigest()
+
+
+def _key_fingerprint(public_key) -> Optional[str]:
+    """A public key's fingerprint as the product writes it: the first 16 hex of the SHA-256 of its raw bytes."""
+    try:
+        from cryptography.hazmat.primitives import serialization
+        raw = public_key.public_bytes(encoding=serialization.Encoding.Raw, format=serialization.PublicFormat.Raw)
+    except Exception:  # noqa: BLE001
+        return None
+    return hashlib.sha256(raw).hexdigest()[:16]
+
+
+def _named_notary_key(notary_keys: dict, fingerprint: str):
+    """The public key `audit/notary_keys.json` holds under `fingerprint` (CHAIN-WALK item 12), or None where it holds
+    none, or holds another key under that name."""
+    pem = notary_keys.get(fingerprint)
+    if not isinstance(pem, str):
+        return None
+    try:
+        from cryptography.hazmat.primitives import serialization
+        key = serialization.load_pem_public_key(pem.encode("ascii"))
+    except Exception:  # noqa: BLE001
+        return None
+    return key if _key_fingerprint(key) == fingerprint else None
 
 
 def verify_pack(pack_path: str, verbose: bool = False, pubkey_path: Optional[str] = None) -> int:
@@ -262,22 +291,57 @@ def verify_pack(pack_path: str, verbose: bool = False, pubkey_path: Optional[str
                 fail(f"audit/notary_anchors.json is not valid JSON: {e}")
                 notary = []
                 failures += 1
+            # Each anchor names the key that signed it (CHAIN-WALK item 12): the pack's own,
+            # or one it replaced, whose public key `audit/notary_keys.json` holds.
+            notary_keys: dict = {}
+            if "audit/notary_keys.json" in names:
+                try:
+                    notary_keys = json.loads(zf.read("audit/notary_keys.json"))
+                    if not isinstance(notary_keys, dict):
+                        raise ValueError("it is not an object")
+                except Exception as e:  # noqa: BLE001
+                    fail(f"audit/notary_keys.json is not valid: {e}")
+                    notary_keys = {}
+                    failures += 1
+            pack_fp = _key_fingerprint(_pub) if _pub is not None else None
             rec_by_id = {r["id"]: r for r in records}
+            pack_org = (manifest.get("scope") or {}).get("org_id")
             verified = 0
+            by_replaced_key = 0
             for a in notary:
+                # An anchor signed per organisation names it, and its signature covers it
+                # (CHAIN-WALK item 8); one signed before over the whole table's head names none.
+                signed_body = {"max_id": a["max_id"], "head_record_hash": a["head_record_hash"],
+                               "row_count": a["row_count"]}
+                if a.get("org_id") is not None:
+                    signed_body["org_id"] = a["org_id"]
                 payload = json.dumps(
-                    {"max_id": a["max_id"], "head_record_hash": a["head_record_hash"],
-                     "row_count": a["row_count"]},
-                    sort_keys=True, separators=(",", ":"), ensure_ascii=False,
+                    signed_body, sort_keys=True, separators=(",", ":"), ensure_ascii=False,
                 ).encode("utf-8")
                 if _pub is None:
                     failures += 1
                     fail("notary anchor present but public key could not be loaded")
                     break
+                key = _pub
+                named = a.get("pubkey_fingerprint")
+                if isinstance(named, str) and named and named != pack_fp:
+                    key = _named_notary_key(notary_keys, named)
+                    if key is None:
+                        fail(f"notary anchor id={a.get('max_id')}: signed by key {named}, which this pack does "
+                             "not carry")
+                        failures += 1
+                        continue
                 try:
-                    _pub.verify(base64.b64decode(a["signature_b64"]), payload)
+                    key.verify(base64.b64decode(a["signature_b64"]), payload)
                 except Exception:  # noqa: BLE001
                     fail(f"notary anchor id={a.get('max_id')}: Ed25519 signature INVALID")
+                    failures += 1
+                    continue
+                if key is not _pub:
+                    by_replaced_key += 1
+                if a.get("org_id") is not None and pack_org is not None and a["org_id"] != pack_org:
+                    fail(f"notary anchor id={a['max_id']}: names organisation {a['org_id']!r}, "
+                         f"and this is {pack_org!r}'s pack")
                     failures += 1
                     continue
                 rec = rec_by_id.get(a["max_id"])
@@ -287,10 +351,18 @@ def verify_pack(pack_path: str, verbose: bool = False, pubkey_path: Optional[str
                 elif rec["record_hash"] != a["head_record_hash"]:
                     fail(f"notary anchor id={a['max_id']}: head_record_hash != the record in this slice")
                     failures += 1
+                elif a.get("org_id") is not None and rec.get("org_id") != a["org_id"]:
+                    fail(f"notary anchor id={a['max_id']}: the record in this slice is another organisation's")
+                    failures += 1
                 else:
                     verified += 1
             if notary and verified == len(notary):
-                ok(f"Notarization verified: {verified} signed chain-head anchor(s) — signatures + hashes match")
+                replaced = (f" ({by_replaced_key} signed by a key this pack's key replaced, whose public key it "
+                            "carries)" if by_replaced_key else "")
+                ok(f"Notarization verified: {verified} signed chain-head anchor(s) — signatures + hashes match"
+                   f"{replaced}")
+            elif not notary:
+                not_checked("Notary anchors: not checked; none has its head in this slice's id range")
 
     if verbose and records:
         print()

@@ -1,4 +1,4 @@
-> Mirror of <https://proofpane.com/proof/> · synced 2026-11-02 · the canonical, always-current version lives on proofpane.com
+> Mirror of <https://proofpane.com/proof/> · synced 2026-11-03 · the canonical, always-current version lives on proofpane.com
 
 # Proof Index
 
