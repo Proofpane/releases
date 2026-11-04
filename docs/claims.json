@@ -52,11 +52,11 @@
     },
     {
       "id": "macos-tray-public-release",
-      "statement": "Proofpane Tray v0.3.9 is an anonymously downloadable public release at https://github.com/Proofpane/releases/releases/tag/tray-v0.3.9. It publishes two signed macOS artifacts: the universal macOS DMG signed with Developer ID Application: PROOFPANE LIMITED (team B94QM75QNG), and a macOS installer package signed with Developer ID Installer: PROOFPANE LIMITED (team B94QM75QNG) for MDM deployment. Both are Apple-notarised and stapled, and each carries an adjacent SHA-256 sidecar. The exact source tag and build workflow both resolve to commit 064c7e57954df9388cfaf45c6f8cdc857da53e4a. The Windows MSI is not Authenticode-signed, and the Linux assets carry SHA-256 digests without a platform-signing claim.",
+      "statement": "Proofpane Tray v0.3.10 is an anonymously downloadable public release at https://github.com/Proofpane/releases/releases/tag/tray-v0.3.10. It publishes two signed macOS artifacts: the universal macOS DMG signed with Developer ID Application: PROOFPANE LIMITED (team B94QM75QNG), and a macOS installer package signed with Developer ID Installer: PROOFPANE LIMITED (team B94QM75QNG) for MDM deployment. Both are Apple-notarised and stapled, and each carries an adjacent SHA-256 sidecar. The exact source tag and build workflow both resolve to commit b8518bdee5512ce7ea6eaf23775cad98ecfd7d3d. The Windows MSI is not Authenticode-signed, and the Linux assets carry SHA-256 digests without a platform-signing claim.",
       "surfaces": [
         {
           "file": "landing/releases.json",
-          "anchor": "https://github.com/Proofpane/releases/releases/tag/tray-v0.3.9"
+          "anchor": "https://github.com/Proofpane/releases/releases/tag/tray-v0.3.10"
         },
         {
           "file": "landing/trust/index.html",
@@ -68,15 +68,15 @@
         },
         {
           "file": "landing/llms.txt",
-          "anchor": "Public Tray v0.3.9: SIGNED + APPLE-NOTARISED + ANONYMOUSLY DOWNLOADABLE"
+          "anchor": "Public Tray v0.3.10: SIGNED + APPLE-NOTARISED + ANONYMOUSLY DOWNLOADABLE"
         },
         {
           "file": "landing/llms-full.txt",
-          "anchor": "Public Tray v0.3.9: SIGNED + APPLE-NOTARISED + ANONYMOUSLY DOWNLOADABLE"
+          "anchor": "Public Tray v0.3.10: SIGNED + APPLE-NOTARISED + ANONYMOUSLY DOWNLOADABLE"
         },
         {
           "file": "landing/index.html",
-          "anchor": "public Proofpane Tray v0.3.9 release carries a signed, notarised and stapled universal disk image"
+          "anchor": "public Proofpane Tray v0.3.10 release carries a signed, notarised and stapled universal disk image"
         }
       ],
       "bases": [
@@ -90,11 +90,11 @@
         },
         {
           "kind": "external",
-          "ref": "https://github.com/Proofpane/releases/releases/tag/tray-v0.3.9"
+          "ref": "https://github.com/Proofpane/releases/releases/tag/tray-v0.3.10"
         }
       ],
-      "verified_at": "2026-08-10",
-      "verified_how": "After publication, both macOS artifacts were downloaded without GitHub authentication from the public release and re-checked on those bytes. The DMG reproduced SHA-256 2d1fa86a2a0d427a764e7fee87926f4b0e71a0817cf2bcac73f1613dfb3b0573; codesign --verify --strict reported valid on disk and satisfies its Designated Requirement under Developer ID Application: PROOFPANE LIMITED, team B94QM75QNG; xcrun stapler validate confirmed the embedded ticket; spctl --type open --context context:primary-signature accepted it as Notarized Developer ID. The installer package reproduced SHA-256 5ca84f50b9e803962d8349334552f9a2d8d518a339ae1775f0a34da842105749; pkgutil --check-signature reported a developer certificate issued by Apple for distribution, notarization trusted by the Apple notary service, and a trusted timestamp of 2026-08-10 07:16:41 UTC under Developer ID Installer: PROOFPANE LIMITED; xcrun stapler validate succeeded; spctl --assess --type install returned accepted / source=Notarized Developer ID. The installed app reported version 0.3.9. The workflow head commit and the tag's commit are both 064c7e57954df9388cfaf45c6f8cdc857da53e4a.",
+      "verified_at": "2026-11-04",
+      "verified_how": "After publication, both macOS artifacts were downloaded without GitHub authentication from the public release and re-checked on those bytes. The DMG reproduced SHA-256 ae34e5e7d3e3ca9626ab92e2696a5931c5abd681f64f04851e13d1592c6031b9; codesign --verify --strict reported valid on disk and satisfies its Designated Requirement under Developer ID Application: PROOFPANE LIMITED (B94QM75QNG) with a trusted timestamp; xcrun stapler validate succeeded; spctl returned accepted / source=Notarized Developer ID / origin=Developer ID Application: PROOFPANE LIMITED (B94QM75QNG); the app inside it passed codesign --verify --deep --strict, and spctl returned accepted / source=Notarized Developer ID for it too. The installer package reproduced SHA-256 df79d32582ced6b248d58b35c2447904bbab5eba16214b91de7b2d12072642b5; pkgutil --check-signature reported signed by a developer certificate issued by Apple for distribution, notarization trusted by the Apple notary service, and a trusted timestamp of 2026-11-04 04:55:07 UTC; xcrun stapler validate succeeded; spctl --assess --type install returned accepted / source=Notarized Developer ID / origin=Developer ID Installer: PROOFPANE LIMITED (B94QM75QNG). The app inside the disk image reports CFBundleShortVersionString 0.3.10; the tray was not installed. The workflow head commit and the tag's commit are both b8518bdee5512ce7ea6eaf23775cad98ecfd7d3d.",
       "status": "current"
     },
     {
@@ -150,7 +150,7 @@
     },
     {
       "id": "external-checks-not-independent-assessment",
-      "statement": "Proofpane has multiple external checks and signals: Apple notarisation of the current distributed macOS daemon, the anonymously downloadable Tray v0.3.9 public release, and desktop-macos-latest artifact 8990063389 from workflow run 31168310848; dependency intelligence from PyPA/GitHub/RustSec; independently maintained Semgrep/Bandit/gitleaks rules; and community directory review. These are not an independent security assessment; no third-party penetration test, red team, bug bounty or review by a named assessor has been completed.",
+      "statement": "Proofpane has multiple external checks and signals: Apple notarisation of the current distributed macOS daemon, the anonymously downloadable Tray v0.3.10 public release, and desktop-macos-latest artifact 8990063389 from workflow run 31168310848; dependency intelligence from PyPA/GitHub/RustSec; independently maintained Semgrep/Bandit/gitleaks rules; and community directory review. These are not an independent security assessment; no third-party penetration test, red team, bug bounty or review by a named assessor has been completed.",
       "surfaces": [
         {
           "file": "landing/trust/index.html",
