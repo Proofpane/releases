@@ -1,4 +1,4 @@
-> Mirror of <https://proofpane.com/trust/> · synced 2026-11-04 · the canonical, always-current version lives on proofpane.com
+> Mirror of <https://proofpane.com/trust/> · synced 2026-11-05 · the canonical, always-current version lives on proofpane.com
 
 # Trust Center
 
@@ -46,7 +46,7 @@ Last updated: 2026-10-31 · Security lead: Louie Lu (founder) · Security contac
 - Transport: TLS for all client↔cloud and gateway↔provider traffic.
 - At rest: customer API keys, device tokens and email credentials are Fernet-encrypted with a dedicated encryption secret (independent from session-token secrets, so credential rotation never destroys stored secrets).
 - Evidence-signing key: Ed25519 private key held server-side; the corresponding public key ships inside every Evidence Pack so verification is self-contained.
-- Device pairing: short-lived pairing codes; device tokens stored hashed; revocation enforced on every authenticated call.
+- Device pairing: short-lived pairing codes; a paired daemon's token stored encrypted server-side, and an organisation's enrollment token only as its SHA-256 hash; revocation enforced on every authenticated call.
 
 ## Tenant isolation `[shipped]`
 
@@ -111,7 +111,7 @@ What that leaves genuinely open, and what money and a customer engagement buy: *
 The obvious objection first, in our own words: **the daemon is a high-privilege security chokepoint** — it proxies MCP tool calls and can touch the filesystem and shell on the machines it governs. We treat it that way by design:
 
 - **Protocol layer only:** a single user-space binary — no kernel extensions, no TLS interception, no browser hooks. Installing Proofpane does not add an attack surface class your security team has never certified before.
-- **Credential hygiene:** pairing secrets and device tokens are encrypted at rest; device tokens rotate with a grace window, and revocation is enforced server-side — a revoked device gets 401 everywhere, immediately.
+- **Credential hygiene:** a paired daemon's token is encrypted at rest on the server, and a pairing code is stored as issued, pairs once and expires in 10 minutes (a tray's in 15); device tokens rotate with a grace window, and revocation is enforced server-side — a revoked device gets 401 everywhere, immediately.
 - **Capability containment:** per-agent policies constrain allowed/denied filesystem paths and shell usage, so a governed agent's blast radius is bounded by configuration, not trust.
 - **Data minimisation:** DLP redaction of secrets happens on-device, before transmission.
 - **Lifecycle honesty:** pairing, disconnect and per-app monitoring-off are audit events on the chain — the daemon being off is a recorded fact, not a blind spot.

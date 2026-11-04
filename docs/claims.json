@@ -568,6 +568,157 @@
       "verified_at": "2026-11-01",
       "verified_how": "tests/test_spend_caps.py drives POST /api/v1/agent/chat with a real token for a registered user, the real agent loop and a stand-in provider that records each call. An organisation over its monthly cap and an agent over its own cap have the turn refused before the provider is called, each with a budget.blocked row (scope org or agent, path chat_stream); a user's budget set to block and spent refuses that user's turn with a budget.scope.blocked row (scope user), and set to alert it does not, while the organisation has another blocking budget; on that route a turn's llm.call row carries the requesting user's department, and once that department's budget set to block is spent the next turn is refused before the provider is called, with a budget.scope.blocked row of scope department, while the same budget refuses a turn whose department is bound; a call proxied through the egress gateway is forwarded and writes a cp.egress.complete row while its organisation is over its cap; and through POST /api/v1/skills/execute/{id}, with the Anthropic client stood in so the metered call writes its own llm.call row, an organisation over its cap has a prompt-only skill's run refused before the model is called, streamed or not, each refusal with a budget.blocked row naming the skill and the same error; tests/test_al_endpoint_3.py pins that a streamed prompt-only run goes through the executor's other steps too: a runtime policy that forbids the server and an input the skill's schema refuses each refuse it before the model is called, and a run that is not refused writes one skill.execute row. test_skill_vendor_route's case pins the organisation's cap on a skill run (budget.blocked, the vendor not called) and test_agent_gates's the agent's cap on run_skill (agent.budget_blocked). The code read: chat_stream asks cost_service.is_over_budget with the agent's id, then budget_scope_service.check_blocking_violation with the request-bound department and the loop's actor; SkillExecutor.execute asks is_over_budget before its call, and workflow steps and a prompt-only skill streamed through execute_skill_stream run through it; the egress gateway asks neither; the department is bound by the auth dependencies of api/deps.py: current_org runs in a worker thread whose context the route does not share, and request_org, which the agent chat route and ten others take, binds it in the request's own context; only the agent chat route's case is measured.",
       "status": "current"
+    },
+    {
+      "id": "daemon-pairing-step",
+      "statement": "A daemon can be paired from the app's MCP Setup page (/mcp-setup): + Pair a device asks the backend for a pairing code, nine characters in the form XXX-XXX-XXX, which expires 10 minutes after it is made and is refused after that.",
+      "surfaces": [
+        {
+          "file": "landing/install/index.html",
+          "anchor": "copy the nine-character code, in the form XXX-XXX-XXX (valid for 10 minutes)"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "test",
+          "ref": "tests/test_pairing_claims.py::test_a_daemons_pairing_code_is_nine_characters_and_lives_ten_minutes"
+        },
+        {
+          "kind": "artifact",
+          "ref": "frontend/app/mcp-setup/page.tsx"
+        },
+        {
+          "kind": "artifact",
+          "ref": "frontend/components/mcp-setup/OneClickPairModal.tsx"
+        }
+      ],
+      "verified_at": "2026-11-04",
+      "verified_how": "Read in the code at main's 87cd8c571 on 2026-11-04: frontend/app/mcp-setup/page.tsx renders + Pair a device, whose modal, OneClickPairModal.tsx, posts /api/v1/devices/pairing-code; backend/app/api/routes/devices.py makes the code in three groups of three from a 32-character alphabet, stores and returns an expiry 10 minutes after it is made, and refuses the code past it. The test makes a code through that route, checks its form and its expiry as returned and as stored, and has a pairing with it refused once that expiry has passed.",
+      "status": "current"
+    },
+    {
+      "id": "pairing-code-lifetimes",
+      "statement": "A daemon's pairing code expires 10 minutes after it is made, and a tray's, which pairs only the tray app, 15 minutes after; each is refused once its expiry has passed.",
+      "surfaces": [
+        {
+          "file": "landing/install/index.html",
+          "anchor": "A daemon's pairing code expires in 10 minutes (a tray's, which pairs only the tray app, in 15)"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "test",
+          "ref": "tests/test_pairing_claims.py::test_a_daemons_pairing_code_is_nine_characters_and_lives_ten_minutes"
+        },
+        {
+          "kind": "test",
+          "ref": "tests/test_pairing_claims.py::test_a_trays_pairing_code_lives_fifteen_minutes"
+        },
+        {
+          "kind": "artifact",
+          "ref": "backend/app/api/routes/tray.py"
+        }
+      ],
+      "verified_at": "2026-11-04",
+      "verified_how": "Read in the code at main's 87cd8c571 on 2026-11-04: backend/app/api/routes/devices.py sets a daemon's code to expire 10 minutes after it is made, and backend/app/api/routes/tray.py's PAIRING_CODE_TTL_MINUTES is 15; a tray code is kept in tray_pairing_codes, which only /api/v1/tray/pair reads, and that route issues a tray token. The two tests make a code through each route, check its expiry as returned and as stored, and have a pairing with it refused once that expiry has passed.",
+      "status": "current"
+    },
+    {
+      "id": "setup-page-device-list",
+      "statement": "The app's MCP Setup page lists the organisation's paired devices that are not revoked, each by its name, and airgov_daemon pair prints the name the device paired under.",
+      "surfaces": [
+        {
+          "file": "landing/install/index.html",
+          "anchor": "is in the device list on"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "artifact",
+          "ref": "frontend/app/mcp-setup/page.tsx"
+        },
+        {
+          "kind": "artifact",
+          "ref": "frontend/components/mcp-setup/DeviceKillswitchSection.tsx"
+        },
+        {
+          "kind": "artifact",
+          "ref": "backend/app/api/routes/devices.py"
+        },
+        {
+          "kind": "artifact",
+          "ref": "daemon/airgov_daemon.py"
+        }
+      ],
+      "verified_at": "2026-11-04",
+      "verified_how": "Read in the code at main's 87cd8c571 on 2026-11-04: the MCP Setup page renders DeviceKillswitchSection, which lists GET /api/v1/devices, the organisation's devices whose revoked_at is empty (list_devices in backend/app/api/routes/devices.py), each row by its name; daemon/airgov_daemon.py's pair prints Name: with the name.",
+      "status": "current"
+    },
+    {
+      "id": "device-token-storage",
+      "statement": "On the server, a paired daemon's device token is stored Fernet-encrypted, and no table of the app's database holds it as issued; an organisation's enrollment token is kept only as its SHA-256 hex digest.",
+      "surfaces": [
+        {
+          "file": "landing/trust/index.html",
+          "anchor": "a paired daemon's token stored encrypted server-side, and an organisation's enrollment token only as its SHA-256 hash"
+        },
+        {
+          "file": "landing/trust/index.html",
+          "anchor": "a paired daemon's token is encrypted at rest on the server"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "test",
+          "ref": "tests/test_pairing_claims.py::test_a_paired_daemons_token_is_stored_encrypted"
+        },
+        {
+          "kind": "test",
+          "ref": "tests/test_pairing_claims.py::test_an_enrollment_token_is_kept_only_as_its_sha256"
+        },
+        {
+          "kind": "test",
+          "ref": "tests/test_device_enrollment.py::test_plaintext_is_returned_once_and_never_stored"
+        }
+      ],
+      "verified_at": "2026-11-04",
+      "verified_how": "Read in the code at main's 87cd8c571 on 2026-11-04: backend/app/api/routes/devices.py stores a paired daemon's token through api_key_service.encrypt_api_key, a Fernet key derived with PBKDF2, in devices.token_encrypted; backend/app/services/device_enrollment_service.py stores an enrollment token's SHA-256 hex digest and returns the token once. The first test pairs a daemon through the routes, finds no row of any table holding the token as issued and token_encrypted decrypting to it; the second mints an enrollment token and finds no row holding it and its row holding its SHA-256 hex digest. The daemon itself keeps its token in its own config file; this claim is about the server.",
+      "status": "current"
+    },
+    {
+      "id": "pairing-code-storage",
+      "statement": "A pairing code is stored as issued: device_pairing_codes and tray_pairing_codes keep it as their key and read it back by its value. It pairs once, a second use refused, and is refused once its expiry has passed, 10 minutes after it is made for a daemon's and 15 for a tray's.",
+      "surfaces": [
+        {
+          "file": "landing/trust/index.html",
+          "anchor": "pairing code is stored as issued, pairs once and expires in 10 minutes (a tray's in 15)"
+        }
+      ],
+      "bases": [
+        {
+          "kind": "test",
+          "ref": "tests/test_pairing_claims.py::test_a_pairing_code_is_stored_as_issued_and_pairs_once"
+        },
+        {
+          "kind": "test",
+          "ref": "tests/test_pairing_claims.py::test_a_daemons_pairing_code_is_nine_characters_and_lives_ten_minutes"
+        },
+        {
+          "kind": "test",
+          "ref": "tests/test_pairing_claims.py::test_a_trays_pairing_code_lives_fifteen_minutes"
+        },
+        {
+          "kind": "artifact",
+          "ref": "backend/app/api/routes/devices.py"
+        },
+        {
+          "kind": "artifact",
+          "ref": "backend/app/api/routes/tray.py"
+        }
+      ],
+      "verified_at": "2026-11-04",
+      "verified_how": "Read in the code at main's 87cd8c571 on 2026-11-04: device_pairing_codes.code and tray_pairing_codes.code are each a plain TEXT primary key, inserted as issued and read back by their value in backend/app/api/routes/devices.py and backend/app/api/routes/tray.py, and each pair route refuses a code already used and one past its expiry. The first test makes a code through each route, reads each back by its value and has its second pairing refused; the two lifetime tests have a pairing past each expiry refused.",
+      "status": "current"
     }
   ]
 }

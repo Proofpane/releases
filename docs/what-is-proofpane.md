@@ -1,4 +1,4 @@
-> Mirror of <https://proofpane.com/answers/what-is-proofpane/> · synced 2026-11-04 · the canonical, always-current version lives on proofpane.com
+> Mirror of <https://proofpane.com/answers/what-is-proofpane/> · synced 2026-11-05 · the canonical, always-current version lives on proofpane.com
 
 # What is Proofpane?
 
