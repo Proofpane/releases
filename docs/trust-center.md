@@ -1,4 +1,4 @@
-> Mirror of <https://proofpane.com/trust/> · synced 2026-11-05 · the canonical, always-current version lives on proofpane.com
+> Mirror of <https://proofpane.com/trust/> · synced 2026-11-07 · the canonical, always-current version lives on proofpane.com
 
 # Trust Center
 
@@ -54,16 +54,16 @@ Last updated: 2026-10-31 · Security lead: Louie Lu (founder) · Security contac
 - The audit chain embeds the organisation id in each row's hash, so cross-tenant tampering is detectable, and file storage is namespaced per organisation.
 - Role-based access control: owner / admin / member, with destructive operations gated to admin and above. JWT authentication; SSO (WorkOS SAML/OIDC and Google OAuth) supported.
 
-## Retention & backups `[shipped]`
+## Retention & backups built
 
 - Audit archival moves rows past a configurable retention boundary out of the hot path without breaking chain verifiability.
-- Database snapshots are compressed and `[shipped]` to S3-compatible object storage with retention rotation; signed chain anchors are additionally exported off-box for disaster recovery of verifiability.
+- Built, not yet confirmed by a restore, and being turned on in production: database snapshots compressed and sent to S3-compatible object storage with retention rotation, and signed chain anchors exported off-box for disaster recovery of verifiability.
 
 ## Subprocessors (current)
 
 - **Fly.io** — application hosting (Sydney).
 - **Cloudflare** — landing-page hosting and CDN.
-- **Cloudflare R2** (S3-compatible) — encrypted backups and anchor export.
+- **Cloudflare R2** (S3-compatible) — encrypted backups and anchor export, once turned on.
 - **Model providers** (Anthropic, OpenAI, Google, DeepSeek, or any OpenAI-compatible endpoint) — only for calls the customer routes through the gateway, under the customer's own keys where configured.
 - **Resend / Mailgun** — outbound email, if the customer enables email features.
 
