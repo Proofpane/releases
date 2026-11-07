@@ -1,10 +1,10 @@
-> Mirror of <https://proofpane.com/trust/> · synced 2026-11-07 · the canonical, always-current version lives on proofpane.com
+> Mirror of <https://proofpane.com/trust/> · synced 2026-11-08 · the canonical, always-current version lives on proofpane.com
 
 # Trust Center
 
-Plain text, structured, written for security review — no marketing images. Each item is tagged `[shipped]`  or `[roadmap]`  so you always know which is which.
+Plain text, structured, written for security review — no marketing images. Each item is tagged `[shipped]` , built  (in the code, not yet confirmed running in production) or `[roadmap]`  so you always know which is which.
 
-Last updated: 2026-10-31 · Security lead: Louie Lu (founder) · Security contact: [Louie.Lu@proofpane.com](mailto:Louie.Lu@proofpane.com) · Company stage: early; Proofpane works through [collaboration](https://proofpane.com/collaborate/), not a price list · Founder: [Louie Lu on LinkedIn](https://www.linkedin.com/in/louielunz)
+Last updated: 2026-11-07 · Security lead: Louie Lu (founder) · Security contact: [Louie.Lu@proofpane.com](mailto:Louie.Lu@proofpane.com) · Company stage: early; Proofpane works through [collaboration](https://proofpane.com/collaborate/), not a price list · Founder: [Louie Lu on LinkedIn](https://www.linkedin.com/in/louielunz)
 
 ## Legal entity registered
 
