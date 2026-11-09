@@ -1,10 +1,10 @@
-> Mirror of <https://proofpane.com/trust/> · synced 2026-11-08 · the canonical, always-current version lives on proofpane.com
+> Mirror of <https://proofpane.com/trust/> · synced 2026-11-10 · the canonical, always-current version lives on proofpane.com
 
 # Trust Center
 
 Plain text, structured, written for security review — no marketing images. Each item is tagged `[shipped]` , built  (in the code, not yet confirmed running in production) or `[roadmap]`  so you always know which is which.
 
-Last updated: 2026-11-07 · Security lead: Louie Lu (founder) · Security contact: [Louie.Lu@proofpane.com](mailto:Louie.Lu@proofpane.com) · Company stage: early; Proofpane works through [collaboration](https://proofpane.com/collaborate/), not a price list · Founder: [Louie Lu on LinkedIn](https://www.linkedin.com/in/louielunz)
+Last updated: 2026-11-09 · Security lead: Louie Lu (founder) · Security contact: [Louie.Lu@proofpane.com](mailto:Louie.Lu@proofpane.com) · Company stage: early; Proofpane works through [collaboration](https://proofpane.com/collaborate/), not a price list · Founder: [Louie Lu on LinkedIn](https://www.linkedin.com/in/louielunz)
 
 ## Legal entity registered
 
@@ -54,16 +54,16 @@ Last updated: 2026-11-07 · Security lead: Louie Lu (founder) · Security contac
 - The audit chain embeds the organisation id in each row's hash, so cross-tenant tampering is detectable, and file storage is namespaced per organisation.
 - Role-based access control: owner / admin / member, with destructive operations gated to admin and above. JWT authentication; SSO (WorkOS SAML/OIDC and Google OAuth) supported.
 
-## Retention & backups built
+## Retention & backups `[shipped]`
 
 - Audit archival moves rows past a configurable retention boundary out of the hot path without breaking chain verifiability.
-- Built, not yet confirmed by a restore, and being turned on in production: database snapshots compressed and sent to S3-compatible object storage with retention rotation, and signed chain anchors exported off-box for disaster recovery of verifiability.
+- Running in production since 2026-11-07, and first checked by a full restore on 2026-11-08: database snapshots compressed, encrypted and sent to S3-compatible object storage with retention rotation, and signed chain anchors exported off-box for disaster recovery of verifiability.
 
 ## Subprocessors (current)
 
 - **Fly.io** — application hosting (Sydney).
 - **Cloudflare** — landing-page hosting and CDN.
-- **Cloudflare R2** (S3-compatible) — encrypted backups and anchor export, once turned on.
+- **Cloudflare R2** (S3-compatible) — encrypted backups and anchor export.
 - **Model providers** (Anthropic, OpenAI, Google, DeepSeek, or any OpenAI-compatible endpoint) — only for calls the customer routes through the gateway, under the customer's own keys where configured.
 - **Resend / Mailgun** — outbound email, if the customer enables email features.
 
